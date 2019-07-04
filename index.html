@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">    
+    <title>Memory_game</title>
+    <link rel="icon" href="images/dragonLogo.png">
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+</head>
+<body>
+    <div class="mainMenu">
+        <div class="menuWrap">
+            <div class="container">
+                <div class="row">                
+                    <div class="col-lg-9 mx-auto col-xl-8 offset-xl-2 main"> 
+                        <button class="menuBtn backBtn"><i class="fa fa-angle-double-left"></i></button>
+                        <div class="listHighscores"></div>
+                        <div class="wrap">                           
+                            <h1>Dragon memory</h1>       
+                            <div class="menuButtons">
+                                <button class="menuBtn highscores">Highscores</button>                    
+                                <button type="button" class="menuBtn cardBack" data-toggle="modal" data-target="#myModal">Card Style</button>
+                                <button class="menuBtn timer">Timer</button> 
+                                <button class="menuBtn difficulty">Level</button>  
+                                <button class="timeBtn min1">1 min</button>
+                                <button class="timeBtn min2">2 min</button>
+                                <button class="timeBtn min3">3 min</button>
+                                <button class="timeBtn infinity">&#8734</button>
+                                <canvas id="myCanvasTime" width="400" height="80"></canvas>   
+                            </div>                                                      
+                            <canvas id="myCanvas" width="400" height="80"></canvas>                          
+                            <div class="btnDiv">
+                                <button class="menuBtn one">Easy</button>
+                                <button class="menuBtn two">Medium</button>
+                                <button class="menuBtn three">Hard</button>                           
+                            </div> 
+
+                            <div class="startBtn"><button class="menuBtn start">Start</button></div>
+                            <div class="modal fade" id="myModal" role="dialog">
+                                <div class="modal-dialog"> 
+                                    <div class="modal-content"> 
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">close &times;</button>
+                                    </div> 
+                                </div>
+                            </div>                           
+                        </div>
+                    </div>                    
+                </div>            
+            </div>
+        </div>
+    </div>    
+    <div class="wrapper">
+        <div class="wrapImg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 menu">
+                        <div class='menuBtns'>
+                            <h1>Dragon Memory</h1>
+                            <button id="newGame">New Game</button>
+                            <button id="options">Options <i class="far fa-pause-circle"></i></button>
+                        </div>
+                        <div class="statistic">
+                            <div id="attempts"><span>Attempts:</span><span id="num">0</span></div>
+                            <div class="clock">00:00</div>
+                            <button id="slideOptions"><i class="fas fa-angle-down"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="memoryGame">
+                                               
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="memory.js"></script>
+</body>
+</html>

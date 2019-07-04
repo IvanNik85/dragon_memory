@@ -1,0 +1,362 @@
+* {
+    margin: 0;
+    padding: 0; 
+    box-sizing: border-box;  
+    user-select: none;
+}
+.wrapper {
+    background: url(images/cave.jpg) no-repeat center;
+    background-size: cover;
+    background-color: rgb(209, 209, 209);
+    height: 100vh;
+    font-size: 18px;
+    display: none;
+    padding-top: 15px;
+}
+.mainMenu {
+    background: url(images/caveBAck.jpg) no-repeat center;
+    background-size: cover;
+    height: 100vh;
+}
+.menuWrap {
+    background-color: rgba(0, 0, 0, 0.3);
+    height: 100%;
+}
+.mainMenu .main {     
+    background: url(images/preview.jpg) no-repeat center;
+    background-size: cover;
+    width: 100%;
+    height: 600px;
+    position: relative;
+    margin-top: 10%;
+    border: 5px solid black;  
+    padding: 0;  
+    margin-top: 114px;
+}
+.wrap {
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 100%;
+    height: 100%;
+    padding-top: 30px;    
+}
+/* modal style */
+.modal-dialog .modal-content {
+    width: 600px;
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-flow: row wrap;
+}
+.modal-content img {
+    width: 25%;
+    height: 25%;
+    padding: 5px;
+}
+.menuButtons {
+    position: relative;
+}
+.menuBtn {
+    width: 140px;
+    height: 40px;
+    border-radius: 4px;
+    background-color: rgba(224, 21, 49, 0.7);
+    color: #fff;
+    border: transparent;
+    margin: 0 7px; 
+    position: relative;
+    border: 2px solid black;
+}
+.menuBtn:focus {
+    outline: none;
+}
+.timeBtn {
+    position: absolute;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    color: #fff;
+    z-index: 5;
+    background-color: rgba(224, 21, 49, 0.7);
+    /* display: none; */
+}
+.timeBtn:focus {
+    outline: none;
+}
+.min1 {
+    bottom: 75px;
+    left: 145px;
+}
+.min2 {
+    bottom: 15px;
+    left: 145px;
+}
+.min3 {
+    bottom: 75px;
+    left: 553px;
+}
+.infinity {
+    bottom: 15px;
+    left: 553px;
+}
+.start {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+}
+.backBtn {
+    position: absolute;
+    bottom: 15px;
+    left: 15px; 
+    display: none;
+}
+#myCanvas {
+    display: block;
+    margin: auto;
+    /* border: 1px solid #d3d3d3; */
+}
+.menuButtons #myCanvasTime {   
+    position: absolute;    
+   left: 0;
+   right: 0; 
+   margin: 0 auto;    
+   bottom: 30px;  
+   z-index: 1;
+}
+.difficulty {
+    position: relative;
+    width: 140px;
+    height: 40px;
+    background-color:rgba(224, 21, 49, 0.7);
+    display: block;
+    margin: auto;
+    border: 1px splid black;
+    z-index: 2;
+}
+.cardBack, .highscores, .timer{
+    position: relative;
+    display: block;
+    margin: 10px auto;
+}
+.timer{
+    position: relative;
+    z-index: 2;
+}
+.btnDiv {
+    display: flex;
+    justify-content: center; 
+    /* display: none; */
+}
+.wrapImg {
+    background-color: rgba(0, 0, 0, 0.6);
+    height: 100vh;
+}
+.memoryGame {
+    width: 100%;
+    height: 825px;
+    display: flex;
+    flex-flow: row wrap;
+    perspective: 1000px;
+}
+#overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+.memoryGame #winLose {
+    position: absolute;
+    color: #fff;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    z-index: 10;
+    width: 100%;
+    text-align: center;
+    font-size: 0px;
+    /* color: #bbb027; */
+    /* color: #bb2727; */
+    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+    font-family: winLose;
+}
+/* 16.666%  for 36
+    20%  for 25*/
+.memoryGame .card {
+    width: calc(25% - 0.375em);
+    height: calc(25% - 0.375em);
+    position: relative;
+    margin: 3px;   
+    transform-style: preserve-3d;
+    transition: .5s;   
+    background-color: transparent; 
+    border: none;
+}
+.card1 {
+    width: calc(20% - 0.375em);
+    height: calc(20% - 0.375em);
+    background: url('images/lastCard1.png') no-repeat center;
+    background-size: cover;
+    margin: 3px; 
+}
+.card1 img {
+    width: 100%;
+    height: 100%;
+}
+.card.flip {
+    transform: rotateY(180deg);    
+    transition: .5s;
+}
+.front, .back {
+    width: 100%;
+    height: auto;
+    position: absolute;    
+    backface-visibility: hidden; 
+    border-radius: 5px;     
+}
+.front {
+    transform: rotateY(180deg);
+}
+@font-face {
+    font-family: memoryFont;
+    src: url(./font/GreatVibes-Regular.ttf);
+}
+@font-face {
+    font-family: digitalClock;
+    src: url(./font/digitalClock.ttf);
+}
+@font-face {
+    font-family: winLose;
+    src: url(./font/FrozenNeutra.otf)
+}
+.menu {
+    border: 2px solid #fad232;    
+}
+.menu h1, .main h1 {
+    font-family: memoryFont;
+    font-size: 65px;    
+    color:#fad232;
+    text-align: center;
+    margin-top: 20px;
+    text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+}
+.main h1 {
+    margin: 0;
+    padding-bottom: 65px;
+}
+#newGame, #options {
+    width: 140px;
+    height: 35px;
+    transform: scale(1);
+    display: block;
+    margin: 20px auto;
+    background-color: rgb(145, 20, 68);
+    outline: none;
+    border:2px solid black;
+    color: #fff;
+    border-radius: 3px;
+}
+#newGame:active {
+    transform: scale(.97);
+    transition: .1s;
+}
+#attempts {
+    text-align: center;
+    color: #fff;
+    font-size: 20px;
+}
+#num {
+    padding-left: 5px;
+}
+.clock {
+    color: #fff;
+    text-align: center;
+    padding-top: 50px;
+    font-size: 60px;
+    font-family: digitalClock;
+}
+#slideOptions {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    color: #fff;
+    background-color:rgb(145, 20, 68);
+    border: 1px solid black;
+    width: 35px;
+    height: 35px;
+    border-radius: 5px;
+    display: none;
+}
+.listHighscores {
+    width: 100%;
+    height: 100%;
+    background: url(./images/scroll.jpg) no-repeat center;
+    background-size: cover;
+    position: absolute;
+    display: none;
+    text-align: center;
+    font-weight: bold;
+    padding-top: 100px;
+}
+@media (min-width: 992px) and (max-width: 1200px) {
+    .memoryGame {
+        height: 690px;
+    }
+}
+/* (min-width: 768px) and  */
+@media (max-width: 991px) { 
+    .memoryGame {
+        height: 690px;
+    }
+    .clock {
+        padding: 0;
+    }
+    #slideOptions {
+        display: block;  
+        transform: rotate(0deg);      
+        transition: .6s;
+    }
+    #slideOptions:focus {
+        outline: none;
+    }
+    .menu {
+        margin-bottom: 10px;
+    }    
+    .menuBtns {
+        display: none;
+    }
+}
+@media (max-width: 1200px) {
+    .min1 {
+        bottom: 75px;
+        left: 124px;
+    }
+    .min2 {
+        bottom: 15px;
+        left: 124px;
+    }
+    .min3 {
+        bottom: 75px;
+        left: 532px;
+    }
+    .infinity {
+        bottom: 15px;
+        left: 532px;
+    }
+}
+@media (max-width: 768px) { 
+    .memoryGame {
+        height: 510px;
+    }
+    .min1 {      
+        left: 33px;
+    }
+    .min2 {     
+        left: 33px;
+    }
+    .min3 {      
+        left: 442px;
+    }
+    .infinity {      
+        left: 442px;
+    }
+}

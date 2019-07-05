@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">    
     <title>Memory_game</title>
     <link rel="icon" href="images/dragonLogo.png">
-    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="stylesheet" href="css/style.css" type="text/css">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.min.css">
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
@@ -38,7 +38,15 @@
                                 <button class="menuBtn two">Medium</button>
                                 <button class="menuBtn three">Hard</button>                           
                             </div> 
-
+                            <div class="playerSign">
+                                <img src="images/dragonLogoP.png" class="leftD" alt="dragonLogoP">
+                                <img src="images/dragonLogoP.png" class="rightD" alt="dragonLogoP">
+                                <p>Player name</p>
+                                <input type="text" id="player">
+                                <button type="button" id="sign">Sign in</button>
+                                <p>Play as Guest</p>
+                                <button type="button" id="playerOne">Player1</button>
+                            </div>
                             <div class="startBtn"><button class="menuBtn start">Start</button></div>
                             <div class="modal fade" id="myModal" role="dialog">
                                 <div class="modal-dialog"> 
@@ -46,7 +54,7 @@
                                         <button type="button" class="btn btn-default" data-dismiss="modal">close &times;</button>
                                     </div> 
                                 </div>
-                            </div>                           
+                            </div>                                                               
                         </div>
                     </div>                    
                 </div>            
@@ -64,6 +72,7 @@
                             <button id="options">Options <i class="far fa-pause-circle"></i></button>
                         </div>
                         <div class="statistic">
+                            <p class="playerName"></p>
                             <div id="attempts"><span>Attempts:</span><span id="num">0</span></div>
                             <div class="clock">00:00</div>
                             <button id="slideOptions"><i class="fas fa-angle-down"></i></button>
@@ -77,8 +86,8 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
     <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="memory.js"></script>
+    <script src="js/memory.js"></script>
 </body>
 </html>

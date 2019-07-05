@@ -2,10 +2,12 @@ $(document).ready(function() {
     let cardStyle;
     let dificulty;
     let timerReg;
-    let changeTimer = ['∞']; 
+    let changeTimer = []; 
     let changedTmr = false;   
     let dragons = [];
     let randomDragon = []; 
+    let playerName;
+    let rank = [];
     let size = 10; 
     let pos = true; 
     let resetTime = 0;
@@ -38,7 +40,7 @@ $(document).ready(function() {
     }
 
     $('.start').click(start);
-    function start() {  
+    function start() { 
         randomiseDragons();
         size = 10;
         $('#num').text(0); 
@@ -63,6 +65,7 @@ $(document).ready(function() {
                 break; 
             default:
                 dificultyLevel(8, cardStyle || 'card1');
+                changeTimer = ['∞'];
         }
         $('.wrapper').show();
         $('.mainMenu').hide();   
@@ -432,14 +435,37 @@ $(document).ready(function() {
             }
         }
 
-        // $('.highscores').click(function() {
-        //     for(let i = 1; i <= 10; i++) {
-        //         $('.listHighscores').append(`<p>${i}. Marko - attempts: 10, time: 03:12</p>`) 
-        //     }
-        //     $('.listHighscores').show();
-        //     console.log(`da`)
-        // });
+        for(let i = 1; i <= 10; i++) {
+            $('.listHighscores').append(`<p>${i}.<span class="rank${i}">--- | | ---</span></p>`) //Marko - attempts: 10, time: 03:12
+        }
+        $('.highscores').click(function() {            
+            $('.listHighscores').addClass('active');           
+        });
+        $('.highscores').blur(function() {
+            $('.listHighscores').removeClass('active');
+        });
 
+        $(window).on('load', function() {
+            $('.playerSign').fadeIn(1000);
+        })  
+        $('#sign').click(function() {
+            playerName = $('#player').val();
+            localStorage.setItem('playerName', playerName);
+            $('.playerName').html(playerName);
+            if(playerName != '') {
+                $('.playerSign').fadeOut(500);
+            } else {
+                alert(`Molimo unesite neku vrednost`)
+            }
+            console.log(playerName)
+        }); 
+        $('#playerOne').click(function() {
+            playerName = 'Player1';
+            localStorage.setItem('playerName', playerName);
+            $('.playerName').html(playerName);
+            $('.playerSign').fadeOut(500);
+            console.log(playerName)
+        }); 
 });
     
 

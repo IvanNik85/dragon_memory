@@ -446,7 +446,11 @@ $(document).ready(function() {
         });
 
         $(window).on('load', function() {
-            $('.playerSign').fadeIn(1000);
+            $('.playerSign').fadeIn(1000);  
+            $('.mainMenu').css({
+                'z-index': 1,
+                'background-color': 'rgba(0, 0, 0, 0.7)'
+            })          
         })  
         $('#sign').click(function() {
             playerName = $('#player').val();
@@ -455,7 +459,7 @@ $(document).ready(function() {
             if(playerName != '') {
                 $('.playerSign').fadeOut(500);
             } else {
-                alert(`Molimo unesite neku vrednost`)
+                alert(`Please enter some value`)
             }
             console.log(playerName)
         }); 
@@ -465,7 +469,7 @@ $(document).ready(function() {
             $('.playerName').html(playerName);
             $('.playerSign').fadeOut(500);
             console.log(playerName)
-        }); 
+        }); //fa-dot-circle-o add before and after add name
 });
     
 

@@ -7,14 +7,19 @@ $(document).ready(function() {
     let dragons = [];
     let randomDragon = []; 
     let playerName;
+    let time;
     let rank = [];
     let size = 10; 
     let pos = true; 
     let resetTime = 0;
     let s = 0;
     let m = 0;
-    let min;
-    let sec; 
+    let aggrTime;
+    let aggrSec;
+    let minutes;   
+    let seconds; 
+    let startTime = 0;   
+    let count = 0; 
     for(let i = 0; i < 12; i++) {
         $('.modal-content').prepend(`<img src="./images/card${i}.png" alt="card${i}" id="card${i}" data-dismiss="modal">`);       
     } 
@@ -41,7 +46,8 @@ $(document).ready(function() {
 
     $('.start').click(start);
     function start() { 
-        randomiseDragons();
+        randomiseDragons();        
+        console.log(startTime)
         size = 10;
         $('#num').text(0); 
         resetTimer();       
@@ -111,16 +117,15 @@ $(document).ready(function() {
         }  
  
         let cards = document.querySelectorAll('.card');
-        cards.forEach(card => card.addEventListener('click', flip));
-
+        cards.forEach(card => card.addEventListener('click', flip));  
         let hasFlipped = false;
         let firstCard, secondCard;
         let lockBoard = false;
-        let countPair = 0;
-        let count = 0; 
+        let countPair = 0; 
+        count = 0;   
         let cardsNumber = document.querySelectorAll('.card').length;
-
-        function flip() {  
+        
+        function flip() {              
             if(lockBoard) return;
             if(this == firstCard) return;
             this.classList.add('flip');    
@@ -129,7 +134,7 @@ $(document).ready(function() {
                 firstCard = this;
             } else {        
                 hasFlipped = false;   
-                secondCard = this;                    
+                secondCard = this;
                 $('#num').text(++count);  
                 if(firstCard.dataset.name == secondCard.dataset.name) {
                     firstCard.removeEventListener('click', flip);
@@ -169,6 +174,24 @@ $(document).ready(function() {
             })                                   
         }  
         clearInterval(timerReg);
+        if(startTime != 0) {
+            aggrTime = m*60 + s; 
+            aggrSec = startTime*60 - aggrTime;       
+            if(aggrSec > 60) {
+                minutes = parseInt(aggrSec/60);
+                seconds = aggrSec - minutes*60;
+            } else {
+                minutes = 0; 
+                seconds = aggrSec;
+            }     
+            seconds < 9 && (seconds = '0' + seconds); 
+            minutes < 9 && (minutes = '0' + minutes);         
+            time = `${minutes}:${seconds}`;
+        } else {
+            time = $('.clock').html();
+        }   
+        uploadScores();
+        console.log(time)
     }            
     
     $('#newGame').click(function(){ 
@@ -326,7 +349,8 @@ $(document).ready(function() {
                 pos = false;    
                 hideTimerBtns(); 
                 changedTmr = false;                      
-                changedTimer(this);    
+                changedTimer(this);  
+                startTime = i;                
             });
         }
 
@@ -348,7 +372,8 @@ $(document).ready(function() {
             }                             
         }
 
-        $('#options').click(function() {             
+        $('#options').click(function() { 
+            console.log(count)
             $('.backBtn').show();
             $('.mainMenu').show();
             $('.wrapper').hide(); 
@@ -433,11 +458,23 @@ $(document).ready(function() {
                 $(a).css('transform', 'rotate(0deg)')
                 menuBtn = true;
             }
+        }        
+        function generateHighscores() {            
+            for(let i = 0; i < 10; i++) {
+                rank.push('--- | | ---');
+                $('.listHighscores').append(`<p>${i+1}.<span class="rank${i}">${rank[i]}</span></p>`) //Marko - attempts: 10, time: 03:12
+                localStorage.setItem("rank", JSON.stringify(rank));
+            }     
+        }      
+        if(!localStorage.getItem('rank')) {            
+            generateHighscores();
+        } else {
+            generateHighscores();  //enter values
         }
-
-        for(let i = 1; i <= 10; i++) {
-            $('.listHighscores').append(`<p>${i}.<span class="rank${i}">--- | | ---</span></p>`) //Marko - attempts: 10, time: 03:12
-        }
+        function uploadScores() {
+            let playerResult = `${playerName} - attempts: ${count}, time: ${time}`;                     
+            $('.rank0').html(playerResult);
+        }                                                                                           //let playerResult = ${playerName} - attempts: ${count}, time: ${time}
         $('.highscores').click(function() {            
             $('.listHighscores').addClass('active');           
         });
@@ -446,30 +483,35 @@ $(document).ready(function() {
         });
 
         $(window).on('load', function() {
-            $('.playerSign').fadeIn(1000);  
-            $('.mainMenu').css({
-                'z-index': 1,
-                'background-color': 'rgba(0, 0, 0, 0.7)'
-            })          
+            $('.playerSign').fadeIn(1000); 
+            $('.start').hide();
         })  
-        $('#sign').click(function() {
+        $('#sign').click(function() {            
             playerName = $('#player').val();
             localStorage.setItem('playerName', playerName);
             $('.playerName').html(playerName);
             if(playerName != '') {
                 $('.playerSign').fadeOut(500);
-            } else {
-                alert(`Please enter some value`)
-            }
-            console.log(playerName)
+                $('.start').fadeIn(500);
+                return;
+            } 
+            Swal.fire({
+                type: 'warning',
+                title: 'Please enter some value',
+                text: 'Enter your name or nickname!',                
+              })           
         }); 
         $('#playerOne').click(function() {
+            $('.start').fadeIn(500);
             playerName = 'Player1';
             localStorage.setItem('playerName', playerName);
             $('.playerName').html(playerName);
-            $('.playerSign').fadeOut(500);
-            console.log(playerName)
-        }); //fa-dot-circle-o add before and after add name
+            $('.playerSign').fadeOut(500);            
+        }); 
+        
+
+
+
 });
     
 

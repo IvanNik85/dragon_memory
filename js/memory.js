@@ -19,7 +19,7 @@ $(document).ready(function() {
     let minutes;   
     let seconds; 
     let startTime = 0;   
-    let count = 0; 
+    let count = 0;     
     for(let i = 0; i < 12; i++) {
         $('.modal-content').prepend(`<img src="./images/card${i}.png" alt="card${i}" id="card${i}" data-dismiss="modal">`);       
     } 
@@ -186,9 +186,10 @@ $(document).ready(function() {
             }     
             seconds < 9 && (seconds = '0' + seconds); 
             minutes < 9 && (minutes = '0' + minutes);         
-            time = `${minutes}:${seconds}`;
+            time = `${minutes}:${seconds}`;           
         } else {
             time = $('.clock').html();
+            aggrSec = m*60 + s;
         }   
         uploadScores();
         console.log(time)
@@ -350,7 +351,7 @@ $(document).ready(function() {
                 hideTimerBtns(); 
                 changedTmr = false;                      
                 changedTimer(this);  
-                startTime = i;                
+                startTime = i; 
             });
         }
 
@@ -358,8 +359,9 @@ $(document).ready(function() {
             hideTimerBtns();  
             m, resetTime = 0;
             pos = true;  
+            startTime = 0; 
             changedTmr = false;    
-            changedTimer(this);            
+            changedTimer(this);
         }); 
 
         function changedTimer(self) {   
@@ -458,23 +460,56 @@ $(document).ready(function() {
                 $(a).css('transform', 'rotate(0deg)')
                 menuBtn = true;
             }
-        }        
-        function generateHighscores() {            
+        }     
+
+        function generateHighscores() { 
             for(let i = 0; i < 10; i++) {
-                rank.push('--- | | ---');
-                $('.listHighscores').append(`<p>${i+1}.<span class="rank${i}">${rank[i]}</span></p>`) //Marko - attempts: 10, time: 03:12
-                localStorage.setItem("rank", JSON.stringify(rank));
+               rank.length < 10 ? rank.push('--- | | ---') : null;                  
+                rank[i] != '--- | | ---' ? 
+                $('.listHighscores').append(`<p>${i+1}.<span class="rank${i}">${ rank[i].name} - attempts: ${rank[i].attempts}, time: ${rank[i].playTime}</span></p>`):
+                $('.listHighscores').append(`<p>${i+1}.<span class="rank${i}">${rank[i]}</span></p>`);            
             }     
+            localStorage.setItem("rank", JSON.stringify(rank));
         }      
         if(!localStorage.getItem('rank')) {            
             generateHighscores();
-        } else {
-            generateHighscores();  //enter values
+        } else {   
+            rank = JSON.parse(localStorage.getItem('rank'));         
+            generateHighscores();          
         }
+
         function uploadScores() {
-            let playerResult = `${playerName} - attempts: ${count}, time: ${time}`;                     
-            $('.rank0').html(playerResult);
-        }                                                                                           //let playerResult = ${playerName} - attempts: ${count}, time: ${time}
+            let playerResult = {
+                name: playerName,
+                attempts: count,
+                playTime: time,
+                aggregate: aggrSec
+            }               
+            console.log(playerResult);
+            function sort() {
+                rank.unshift(playerResult);    
+                rank.sort(function(a, b) {return a.aggregate - b.aggregate}); 
+                rank.sort(function(a, b) {if(a.aggregate == b.aggregate) {return a.attempts - b.attempts}}); 
+                rank.pop();   
+            }
+                                  
+                if(rank.every((el) => el == '--- | | ---')) {    
+                    rank.unshift(playerResult);                  
+                    rank.pop();                                
+                } else if(rank.some((el) => el == '--- | | ---')){
+                    sort();
+                } else {
+                    sort(); 
+                }
+                localStorage.setItem("rank", JSON.stringify(rank)); 
+
+           
+            for(let i in rank) {                
+                rank[i] != '--- | | ---' ? $('.rank'+ i).html(`${ rank[i].name} - attempts: ${rank[i].attempts}, time: ${rank[i].playTime}`):
+                rank[i] = '--- | | ---';
+            }  
+        }    
+        //let playerResult = ${playerName} - attempts: ${count}, time: ${time}
         $('.highscores').click(function() {            
             $('.listHighscores').addClass('active');           
         });

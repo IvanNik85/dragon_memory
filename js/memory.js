@@ -112,7 +112,7 @@ $(document).ready(function() {
         })(); 
 
         if(num == 12 && j < 14) { 
-            $('.memoryGame').append(`<div class="card1"<img src="images/dragon40.jpg" alt="neutral"></div>`);
+            $('.memoryGame').append(`<div class="card1"<img src="images/lastCard1.png" alt="neutral"></div>`);
             $('.card1').css('order', 16);
         }  
  

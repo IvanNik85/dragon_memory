@@ -41,6 +41,7 @@
     margin-top: 114px;
 }
 .wrap {
+    /* background: linear-gradient(140deg, #03313c, #000); */
     background-color: rgba(0, 0, 0, 0.6);
     width: 100%;
     height: 100%;
@@ -48,24 +49,33 @@
 }
 /* modal style */
 #myModal {
-    padding-left: 17px;
+    padding: 15px 17px 0;
 }
 .modal .modal-dialog {
     max-width: 600px;
     margin: 7.3rem auto;
 }
 .modal-dialog .modal-content {
-    width: 600px;
-    height: 600px;
+    width: 100%;   
     display: flex;
+    flex-flow: row wrap;
     justify-content: center;
     align-content: center;
     flex-flow: row wrap;
+    padding: 20px 15px;   
 }
 .modal-content img {
     width: 25%;
     height: 25%;
     padding: 5px;
+}
+.modal-content .close {
+    font-size: 1.2em;
+    line-height: 40px;
+}
+.modal-content .close:hover span {
+    color: red;
+    font-weight: bold;
 }
 .menuButtons {
     position: relative;
@@ -136,6 +146,7 @@
     bottom: 15px;
     left: 15px; 
     display: none;
+    z-index: 1;
 }
 #myCanvas {
     display: block;
@@ -449,35 +460,61 @@
 @media (max-width: 1200px) {
     .min1 {
         bottom: 75px;
-        left: 124px;
+        left: 127px;
     }
     .min2 {
         bottom: 15px;
-        left: 124px;
+        left: 127px;
     }
     .min3 {
         bottom: 75px;
-        left: 532px;
+        left: 536px;
     }
     .infinity {
         bottom: 15px;
-        left: 532px;
+        left: 536px;
     }
+    #dragon {
+        left: 23%;
+    }    
 }
-@media (max-width: 768px) { 
-    .min1 {      
-        left: 33px;
-    }
-    .min2 {     
-        left: 33px;
-    }
-    .min3 {      
-        left: 442px;
-    }
-    .infinity {      
-        left: 442px;
+@media (max-width: 767px) { 
+    .min1, .min2 {      
+        left: 37px;
+    }     
+    .min3,.infinity {      
+        left: 446px;
     }
     #dragon {
         left: 15%;
+    }    
+}
+@media (max-width: 576px) {
+    .min1, .min2 {     
+        left: 15%;
     }
+    .min3, .infinity {      
+        left: 75%;
+    }
+    .btnDiv {
+        margin-top: 20px;
+    }
+    .backBtn, .start {
+        width: 80px;
+    }
+}
+@media (max-width: 450px) {
+    .min1, .min2 {     
+        left: 15%;
+        background: rgba(0, 0, 0, 0.8)
+    }
+    .min3, .infinity {      
+        left: 70%;
+        background: rgba(0, 0, 0, 0.8)
+    }    
+}
+@media (max-width: 339px) { 
+    #dragon {
+        top: 35%;
+    }    
 }

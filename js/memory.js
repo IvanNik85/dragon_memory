@@ -35,7 +35,7 @@ $(document).ready(function() {
     for(let i = 0; i < 3; i++) {
         $(selectDif[i]).click(function() {  
             dificulty = dif[i];
-            hide(this);       
+            hide(this);           
         });
     }
     
@@ -206,17 +206,25 @@ $(document).ready(function() {
     let called = false;
     $('.difficulty').click(function(){    
         $('#myCanvas').show();     
-        $('.btnDiv').css('visibility', 'hidden');         
-        if(called) {            
-            reset(); 
+        $('.btnDiv').css('visibility', 'hidden');   
+        if($(window).width() < 576) {
+            $('#myCanvas, #myCanvasTime').hide();
+            $('.btnDiv').fadeIn(270);
             setTimeout(function() {
                 $('.btnDiv').css('visibility', 'visible'); 
-            },900)                                 
-        } else {
-            animate();
-            $('.btnDiv').css('visibility', 'visible'); 
-            called = true;             
-        }        
+            },230);   
+        } else {       
+            if(called) {            
+                reset(); 
+                setTimeout(function() {
+                    $('.btnDiv').css('visibility', 'visible'); 
+                },900)                                 
+            } else {
+                animate();
+                $('.btnDiv').css('visibility', 'visible'); 
+                called = true;             
+            } 
+        }       
     })     
 
     $('.btnDiv').css('display', 'none');
@@ -252,19 +260,27 @@ $(document).ready(function() {
         }    
         
         let called1 = false;     
-        $('.timer').click(function(){ 
-            $('.timeBtn').css('visibility', 'hidden');       
-            if(called1) {                                     
-                resetTimeCanvas();                              
+        $('.timer').click(function(){            
+            $('.timeBtn').css('visibility', 'hidden');  
+            if($(window).width() < 576) {
+                $('#myCanvas, #myCanvasTime').hide();
+                $('.timeBtn').fadeIn(270);
                 setTimeout(function() {
                     $('.timeBtn').css('visibility', 'visible'); 
-                },600)                                 
-            } else {  
-                resetTimeCanvas();               
-                animateTime();                
-                $('.timeBtn').css('visibility', 'visible'); 
-                called1 = true;             
-            }        
+                },230);   
+            } else {                     
+                if(called1) {                                     
+                    resetTimeCanvas();                              
+                    setTimeout(function() {
+                        $('.timeBtn').css('visibility', 'visible'); 
+                    },600)                                 
+                } else {  
+                    resetTimeCanvas();               
+                    animateTime();                
+                    $('.timeBtn').css('visibility', 'visible'); 
+                    called1 = true;             
+                }        
+            }
         });
 
         function resetTimeCanvas() {
@@ -385,7 +401,8 @@ $(document).ready(function() {
             clearInterval(timerReg);
         });
 
-        $('.backBtn').click(function() {          
+        $('.backBtn').click(function() {  
+            setTimeout(slideUpMenu, 200);                   
             if(changedTmr == true) {
                 resetTimer();                 
             } else if($('.clock').html() != `00:00` || pos) {
@@ -436,16 +453,19 @@ $(document).ready(function() {
             } 
         }
         let menuBtn = true;
-        $(window).resize(() => {                 
+        $(window).resize(() => {  
+            slideUpMenu();
+        })
+        function slideUpMenu() {
             $(this).width() < 975 ?                
-                $('.menuBtns').slideUp() :    
-                $('.menuBtns').slideDown(); 
+            $('.menuBtns').slideUp() :    
+            $('.menuBtns').slideDown(); 
 
             if($('.menuBtns').is(":visible")) {
                 $('#slideOptions').css('transform', 'rotate(0deg)');
                 menuBtn = true;
             } 
-        })
+        }              
        
         $('#slideOptions').click(function(){
             $('.menuBtns').slideToggle();  
@@ -544,7 +564,11 @@ $(document).ready(function() {
             $('.playerSign').fadeOut(500);            
         }); 
         
-
+        $(window).resize(function() {
+            if($(this).width() < 576) {
+                $('#myCanvas, #myCanvasTime').hide(); 
+            }
+        })
 
 
 });

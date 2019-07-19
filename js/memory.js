@@ -19,7 +19,8 @@ $(document).ready(function() {
     let minutes;   
     let seconds; 
     let startTime = 0;   
-    let count = 0;     
+    let count = 0;   
+    let textSize;  
     for(let i = 0; i < 12; i++) {
         $('.modal-content').prepend(`<img src="./images/card${i}.png" alt="card${i}" id="card${i}" data-dismiss="modal">`);       
     } 
@@ -158,20 +159,29 @@ $(document).ready(function() {
     }  
 
     function winLose(message, colorWL) {               
-        let interval = setInterval(animate, 10);
+        let interval = setInterval(animateWinLose, 10);
         $('#overlay').css({
             'z-index': 1,
             'background-color': 'rgba(0, 0, 0, 0.7)'
         });
-        function animate() {
+        function animateWinLose() {           
+            if($(window).width() > 1200) {
+                textSize = 150;  
+            } else if ($(window).width() > 768 && $(window).width() < 1200) {
+                textSize = 115; 
+            } else if ($(window).width() > 450 && $(window).width() < 768) {
+                textSize = 95;
+            } else {
+                textSize = 70;
+            }   
             size++;
-            if(size == 150) {
+            if(size == textSize) {
                 return clearInterval(interval);
             } 
             $('#winLose').html(message).css({
                 fontSize: size + 'px',
                 color: colorWL
-            })                                   
+            })                  
         }  
         clearInterval(timerReg);
         if(startTime != 0) {
@@ -432,7 +442,8 @@ $(document).ready(function() {
             m > 9 ? min = m : min = '0' + m; 
             
             $('.clock').html(min + ':' + sec); 
-            m == 30 && clearInterval(timerReg); // stop timer
+
+            m == 30 && winLose('You Lose', '#bb2727');            
         }
         function timerNeg() {            
             if(s == 0 && s < 9) {               
@@ -441,9 +452,7 @@ $(document).ready(function() {
             }
             s--;  
 
-            if($('.clock').html() == `00:01`){ 
-                winLose('You Lose', '#bb2727');
-            }            
+            $('.clock').html() == `00:01` && winLose('You Lose', '#bb2727');                        
         }
         function timerPos() {            
             s++; 

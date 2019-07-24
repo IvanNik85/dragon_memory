@@ -9,6 +9,8 @@ $(document).ready(function() {
     let playerName;
     let time;
     let rank = [];
+    let rankMedium = [];
+    let rankHard = [];
     let size = 10; 
     let pos = true; 
     let resetTime = 0;
@@ -20,7 +22,7 @@ $(document).ready(function() {
     let seconds; 
     let startTime = 0;   
     let count = 0;   
-    let textSize;  
+    let textSize;      
     for(let i = 0; i < 12; i++) {
         $('.modal-content').prepend(`<img src="./images/card${i}.png" alt="card${i}" id="card${i}" data-dismiss="modal">`);       
     } 
@@ -36,7 +38,7 @@ $(document).ready(function() {
     for(let i = 0; i < 3; i++) {
         $(selectDif[i]).click(function() {  
             dificulty = dif[i];
-            hide(this);           
+            hide(this); 
         });
     }
     
@@ -45,10 +47,9 @@ $(document).ready(function() {
         par.parentElement.style.visibility = 'hidden'; 
     }
 
-    $('.start').click(start);
+    $('.start').click(start);    
     function start() { 
-        randomiseDragons();        
-        console.log(startTime)
+        randomiseDragons(); 
         size = 10;
         $('#num').text(0); 
         resetTimer();       
@@ -73,9 +74,10 @@ $(document).ready(function() {
             default:
                 dificultyLevel(8, cardStyle || 'card1');
                 changeTimer = ['∞'];
+                dificulty = 8;
         }
         $('.wrapper').show();
-        $('.mainMenu').hide();   
+        $('.mainMenu').hide();        
     }
      
     function randomiseDragons() {
@@ -90,7 +92,7 @@ $(document).ready(function() {
         }        
     }    
 
-    function dificultyLevel(num, back) {
+    function dificultyLevel(num, back) {  
         console.log(dragons);
         console.log(randomDragon);
         $('.memoryGame').empty();
@@ -154,6 +156,18 @@ $(document).ready(function() {
             // Win condition and display message
             if(cardsNumber == countPair) { 
                 winLose('You Win', '#15ab20');
+                // switch(dificulty) {
+                //     case 8:
+                //     uploadScores(rank);   
+                //     break;
+                //     case 12:
+                //     uploadScores(rankMedium);   
+                //     break;
+                //     case 18:
+                //     uploadScores(rankHard);   
+                //     break;
+                // }
+                uploadScores();
             } 
         }  
     }  
@@ -200,8 +214,7 @@ $(document).ready(function() {
         } else {
             time = $('.clock').html();
             aggrSec = m*60 + s;
-        }   
-        uploadScores();
+        }           
         console.log(time)
     }            
     
@@ -400,7 +413,7 @@ $(document).ready(function() {
             }                             
         }
 
-        $('#options').click(function() { 
+        $('#options').click(function() {           
             console.log(count)
             $('.backBtn').show();
             $('.mainMenu').show();
@@ -491,22 +504,29 @@ $(document).ready(function() {
             }
         }     
 
-        function generateHighscores() { 
+        function generateHighscores(par1, par2, par3) { 
             for(let i = 0; i < 10; i++) {
-               rank.length < 10 ? rank.push('--- | | ---') : null;                  
-                rank[i] != '--- | | ---' ? 
-                $('.listHighscores').append(`<p>${i+1}.<span class="rank${i}">${ rank[i].name} - attempts: ${rank[i].attempts}, time: ${rank[i].playTime}</span></p>`):
-                $('.listHighscores').append(`<p>${i+1}.<span class="rank${i}">${rank[i]}</span></p>`);            
+               par2.length < 10 ? par2.push('--- | | ---') : null;                  
+                par2[i] != '--- | | ---' ? 
+                $(par1).append(`<p>${i+1}.<span class="rank${i}">${ par2[i].name} - attempts: ${par2[i].attempts}, time: ${par2[i].playTime}</span></p>`):
+                $(par1).append(`<p>${i+1}.<span class="rank${i}">${par2[i]}</span></p>`);            
             }     
-            localStorage.setItem("rank", JSON.stringify(rank));
-        }      
-        if(!localStorage.getItem('rank')) {            
-            generateHighscores();
-        } else {   
-            rank = JSON.parse(localStorage.getItem('rank'));         
-            generateHighscores();          
-        }
+            localStorage.setItem(par3, JSON.stringify(par2));
+        } 
 
+        let highscores = ['.listHighscores','.listHighscoresM','.listHighscoresH']; 
+        let storageScores = [rank, rankMedium, rankHard]; 
+        let storageNames = ['rank', 'rankMedium', 'rankHard']; 
+
+        for(let i=0; i<3; i++) {
+            if(!localStorage.getItem(storageNames[i])) {            
+                generateHighscores(highscores[i], storageScores[i], storageNames[i]);
+            } else {   
+                storageScores[i] = JSON.parse(localStorage.getItem(storageNames[i]));         
+                generateHighscores(highscores[i], storageScores[i], storageNames[i]);          
+            }         
+        }             
+        
         function uploadScores() {
             let playerResult = {
                 name: playerName,
@@ -536,15 +556,26 @@ $(document).ready(function() {
             for(let i in rank) {                
                 rank[i] != '--- | | ---' ? $('.rank'+ i).html(`${ rank[i].name} - attempts: ${rank[i].attempts}, time: ${rank[i].playTime}`):
                 rank[i] = '--- | | ---';
-            }  
-        }    
+            }                        
+        }            
         //let playerResult = ${playerName} - attempts: ${count}, time: ${time}
-        $('.highscores').click(function() {            
-            $('.listHighscores').addClass('active');           
+        $('.highscores').click(function() {   
+            $('.listHighscores').addClass('active');  
+            $('.fa-angle-left').hide(); 
+            $('.fa-angle-right').show();             
         });
-        $('.highscores').blur(function() {
-            $('.listHighscores').removeClass('active');
+        $('.fa-times-circle').click(function() {           
+            $(this).parent().removeClass('active');
         });
+     
+        // $('html').click(function(e) {
+        //     //if clicked element is not your element and parents aren't your div
+        //     if (e.target.className != 'active' && $(e.target).parents('.active').length == 0) {
+        //       console.log(`Da`)
+        //     } else {
+        //         console.log(`NEEEE`)
+        //     }
+        //   });
 
         $(window).on('load', function() {
             $('.playerSign').fadeIn(1000); 
@@ -577,11 +608,33 @@ $(document).ready(function() {
             if($(this).width() < 576) {
                 $('#myCanvas, #myCanvasTime').hide(); 
             }
+        })               
+   
+        $('.fa-angle-right').click(function() {
+            for(let i in highscores) {    
+                $('.fa-angle-left').show(500);           
+                if($(highscores[i]).hasClass('active')) {
+                    i == 1 && $('.fa-angle-right').hide(500);
+                    $(highscores[i]).removeClass('active');                  
+                    $(highscores[(++i)]).addClass('active');
+                   break;
+                }               
+            }           
+        })
+        $('.fa-angle-left').click(function() {            
+            for(let i in highscores) {    
+                $('.fa-angle-right').show(500);            
+                if($(highscores[i]).hasClass('active')) {
+                    i == 1 && $('.fa-angle-left').hide(500);
+                    $(highscores[i]).removeClass('active');                  
+                    $(highscores[(--i)]).addClass('active');
+                   break;
+                }
+            }           
         })
 
-
-});
-    
+}); 
+ 
 
 
     

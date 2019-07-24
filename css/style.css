@@ -8,14 +8,14 @@
     background: url(../images/cave.jpg) no-repeat center;
     background-size: cover;
     background-color: rgb(209, 209, 209);
-    height: 100vh;
+    min-height: 100vh;
     font-size: 18px;
     display: none;   
 }
 .mainMenu {
     background: url(../images/caveBAck.jpg) no-repeat center;
     background-size: cover;
-    height: 100vh;
+    min-height: 100vh;
 }
 .menuWrap {
     background-color: rgba(0, 0, 0, 0.3);
@@ -190,7 +190,7 @@
 }
 .wrapImg {
     background-color: rgba(0, 0, 0, 0.6);
-    height: 100vh;
+    min-height: 100vh;
     padding-top: 15px;
 }
 #game {
@@ -308,6 +308,7 @@
     margin-bottom: 5px;
     padding-left: 8px;
     width: 190px;
+    height: 35px;
 }
 .playerName {
     color: #fff;
@@ -316,9 +317,23 @@
     height: 35px;
     border: 2px solid rgb(145, 20, 68);
     margin: 0 auto 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-#sign {
+#sign, #playerOne {
     margin-bottom: 30px;
+    transform: scale(1);
+    border: 1px solid #929290; 
+    transition: .05s;  
+}
+#sign:hover, #playerOne:hover {
+    box-shadow: 5px 7px 20px #333131;
+}
+#sign:focus, #playerOne:focus, #player:focus {
+    outline: none;
+}
+#sign:active, #playerOne:active {
+transform: scale(.97);
 }
 .swal2-show {
     position: relative;
@@ -418,7 +433,53 @@
     height: 70%;
     margin: auto;
 }
-.listHighscores {    
+.listHighscoresM {
+    z-index: 4;   
+}
+.listHighscoresH {
+    z-index: 3;   
+}
+.fa-angle-left, .fa-angle-right {
+    position: absolute;
+    font-size: 27px;   
+    width: 60px;
+    height: 60px; 
+    line-height: 60px !important;
+    top: 6.5%;
+}
+.fa-angle-left {  
+    left: 27%;    
+}
+.fa-angle-right { 
+    right: 27%;   
+}
+.fa-angle-left:hover, .fa-angle-right:hover {
+    font-size: 33px;
+    transition: .1s;    
+    top: 6.4%;
+    cursor: pointer;
+}
+span#diff {
+    position: absolute;
+    top: 7%;
+    transform: translateX(-50%);
+    left: 50%;
+    font-size: 35px;
+    font-family: scorelist;
+}
+.fa-times-circle {
+    position: absolute;
+    top: 5%;
+    right: 15%;
+    font-size: 30px; 
+    transition: .1s;
+}
+.fa-times-circle:hover {
+   color: #8e0c0c;
+   cursor: pointer;
+   font-weight: bold;
+}
+.listHighscores, .listHighscoresM, .listHighscoresH {    
     transform: scale(0);
     position: absolute;   
     width: 85%;
@@ -431,25 +492,20 @@
     font-weight: bold;
     padding-top: 165px;
     transition: all 0.9s;
-    z-index: 5;
+    z-index: 5;   
 }
-.listHighscores.active {
+.active  {
     transform: scale(1);    
 }
-.listHighscores p {
+.listHighscores p,.listHighscoresM p, .listHighscoresH p {
     font-family: scorelist;
     font-size: 1.5em;
     margin: 5px;
 }
-.listHighscores span {
+.listHighscores span, .listHighscoresM span, .listHighscoresH span {
     padding-left: 15px;
 }
-@media (min-width: 768px) and (max-width: 992px) { 
-    .wrapper, .wrapImg {
-        height: 100%;
-    }    
-}
-@media (max-width: 1200px) {
+@media(max-width: 1200px) {
     .min1 {
         bottom: 75px;
         left: 127px;
@@ -469,6 +525,18 @@
     #dragon {
         left: 23%;
     }    
+    #diff {
+        top: 8% !important;
+    }
+    .fa-angle-left, .fa-angle-right {
+        top: 7.6%;
+    }
+    .fa-angle-left:hover, .fa-angle-right:hover {
+        top: 7.5%;
+    }
+    .fa-times-circle {
+        top: 6%;
+    }
 }
 @media (max-width: 991px) {  
     .clock {
@@ -499,15 +567,23 @@
     #dragon {
         left: 15%;
     }  
-    .listHighscores { 
+    .listHighscores, .listHighscoresM, .listHighscoresH { 
         width: 100%;
         height: 100%;
         padding-top: 130px;
         top: 0;
         left: 0;       
     }  
-    .listHighscores p { 
+    .listHighscores p, .listHighscoresM p, .listHighscoresH p { 
         font-size: 1.2em;
+    }
+    .fa-angle-left, .fa-angle-right {
+        position: absolute;
+        top: 6% !important;
+    }
+    .fa-angle-left:hover, .fa-angle-right:hover {
+        position: absolute;
+        top: 6% !important;
     }
 }
 @media (max-width: 576px) {
@@ -525,10 +601,10 @@
     }
 }
 @media (max-width: 500px) {
-    .listHighscores {
+    .listHighscores, .listHighscoresM, .listHighscoresH {
         padding-top: 140px;
     }    
-    .listHighscores p { 
+    .listHighscores p, .listHighscoresM p, .listHighscoresH p { 
         font-size: 1.1em;       
     }
 }
@@ -541,18 +617,24 @@
         left: 70%;
         background: rgba(0, 0, 0, 0.8)
     }    
-    .listHighscores {
+    .listHighscores, .listHighscoresM, .listHighscoresH {
         padding-top: 150px;
     }    
-    .listHighscores p { 
+    .listHighscores p, .listHighscoresM p, .listHighscoresH p { 
         font-size: 1em;       
     }
 }
 @media (max-width: 400px) {
-    .listHighscores {
+    .listHighscores, .listHighscoresM, .listHighscoresH {
         width: 200%;
         left: -50%;
     }    
+    img.leftD, img.rightD {
+        display: none;
+    }
+    .playerSign {
+        top: 53%;
+    }
 }
 @media (max-width: 339px) { 
     #dragon {

@@ -22,7 +22,8 @@ $(document).ready(function() {
     let seconds; 
     let startTime = 0;   
     let count = 0;   
-    let textSize;      
+    let textSize;     
+     
     for(let i = 0; i < 12; i++) {
         $('.modal-content').prepend(`<img src="./images/card${i}.png" alt="card${i}" id="card${i}" data-dismiss="modal">`);       
     } 
@@ -48,7 +49,7 @@ $(document).ready(function() {
     }
 
     $('.start').click(start);    
-    function start() { 
+    function start() {         
         randomiseDragons(); 
         size = 10;
         $('#num').text(0); 
@@ -156,18 +157,18 @@ $(document).ready(function() {
             // Win condition and display message
             if(cardsNumber == countPair) { 
                 winLose('You Win', '#15ab20');
-                // switch(dificulty) {
-                //     case 8:
-                //     uploadScores(rank);   
-                //     break;
-                //     case 12:
-                //     uploadScores(rankMedium);   
-                //     break;
-                //     case 18:
-                //     uploadScores(rankHard);   
-                //     break;
-                // }
-                uploadScores();
+                switch(dificulty) {
+                    case 8:
+                    uploadScores(rank, 'rank');   
+                    break;
+                    case 12:
+                    uploadScores(rankMedium, 'rankMedium');   
+                    break;
+                    case 18:
+                    uploadScores(rankHard, 'rankHard');   
+                    break;
+                }
+                // uploadScores();
             } 
         }  
     }  
@@ -228,6 +229,9 @@ $(document).ready(function() {
     ctx.lineWidth = 2.5;
     let called = false;
     $('.difficulty').click(function(){    
+        console.log(rank)
+        console.log(rankMedium)
+        console.log(rankHard)
         $('#myCanvas').show();     
         $('.btnDiv').css('visibility', 'hidden');   
         if($(window).width() < 576) {
@@ -503,31 +507,40 @@ $(document).ready(function() {
                 menuBtn = true;
             }
         }     
-
-        function generateHighscores(par1, par2, par3) { 
-            for(let i = 0; i < 10; i++) {
-               par2.length < 10 ? par2.push('--- | | ---') : null;                  
-                par2[i] != '--- | | ---' ? 
-                $(par1).append(`<p>${i+1}.<span class="rank${i}">${ par2[i].name} - attempts: ${par2[i].attempts}, time: ${par2[i].playTime}</span></p>`):
-                $(par1).append(`<p>${i+1}.<span class="rank${i}">${par2[i]}</span></p>`);            
-            }     
-            localStorage.setItem(par3, JSON.stringify(par2));
-        } 
-
         let highscores = ['.listHighscores','.listHighscoresM','.listHighscoresH']; 
         let storageScores = [rank, rankMedium, rankHard]; 
         let storageNames = ['rank', 'rankMedium', 'rankHard']; 
-
-        for(let i=0; i<3; i++) {
-            if(!localStorage.getItem(storageNames[i])) {            
-                generateHighscores(highscores[i], storageScores[i], storageNames[i]);
-            } else {   
-                storageScores[i] = JSON.parse(localStorage.getItem(storageNames[i]));         
-                generateHighscores(highscores[i], storageScores[i], storageNames[i]);          
-            }         
-        }             
         
-        function uploadScores() {
+       function generateHighscores(par, par2, par3) { 
+            for(let i = 0; i < 10; i++) {
+                console.log(par.length)
+               par.length < 10 ? par.push('--- | | ---') : null;                  
+                par[i] != '--- | | ---' ? 
+                $(par3).append(`<p>${i+1}.<span class="${par2}${i}">${ par[i].name} - attempts: ${par[i].attempts}, time: ${par[i].playTime}</span></p>`):
+                $(par3).append(`<p>${i+1}.<span class="${par2}${i}">${par[i]}</span></p>`);            
+            }     
+            localStorage.setItem(par2, JSON.stringify(par));
+        }      
+        if(!localStorage.getItem('rank')) {            
+            generateHighscores(rank, 'rank', '.listHighscores');
+        } else {   
+            rank = JSON.parse(localStorage.getItem('rank'));         
+            generateHighscores(rank, 'rank', '.listHighscores');          
+        }
+        if(!localStorage.getItem('rankMedium')) {            
+            generateHighscores(rankMedium, 'rankMedium', '.listHighscoresM');
+        } else {   
+            rankMedium = JSON.parse(localStorage.getItem('rankMedium'));         
+            generateHighscores(rankMedium, 'rankMedium', '.listHighscoresM');          
+        }
+        if(!localStorage.getItem('rankHard')) {            
+            generateHighscores(rankHard, 'rankHard', '.listHighscoresH');
+        } else {   
+            rankHard = JSON.parse(localStorage.getItem('rankHard'));         
+            generateHighscores(rankHard, 'rankHard', '.listHighscoresH');          
+        }  
+       
+        function uploadScores(diff, storageName) {
             let playerResult = {
                 name: playerName,
                 attempts: count,
@@ -535,31 +548,33 @@ $(document).ready(function() {
                 aggregate: aggrSec
             }               
             console.log(playerResult);
+            console.log(rank)           
             function sort() {
-                rank.unshift(playerResult);    
-                rank.sort(function(a, b) {return a.aggregate - b.aggregate}); 
-                rank.sort(function(a, b) {if(a.aggregate == b.aggregate) {return a.attempts - b.attempts}}); 
-                rank.pop();   
+                diff.unshift(playerResult);    
+                diff.sort(function(a, b) {return a.aggregate - b.aggregate}); 
+                diff.sort(function(a, b) {if(a.aggregate == b.aggregate) {return a.attempts - b.attempts}}); 
+                diff.pop();   
             }
                                   
-                if(rank.every((el) => el == '--- | | ---')) {    
-                    rank.unshift(playerResult);                  
-                    rank.pop();                                
-                } else if(rank.some((el) => el == '--- | | ---')){
+                if(diff.every((el) => el == '--- | | ---')) {    
+                    diff.unshift(playerResult);                  
+                    diff.pop();                                
+                } else if(diff.some((el) => el == '--- | | ---')){
                     sort();
                 } else {
                     sort(); 
                 }
-                localStorage.setItem("rank", JSON.stringify(rank)); 
+                localStorage.setItem(storageName, JSON.stringify(diff)); 
 
            
-            for(let i in rank) {                
-                rank[i] != '--- | | ---' ? $('.rank'+ i).html(`${ rank[i].name} - attempts: ${rank[i].attempts}, time: ${rank[i].playTime}`):
-                rank[i] = '--- | | ---';
+            for(let i in diff) {                
+                diff[i] != '--- | | ---' ? $(`.${storageName}${i}`).html(`${ diff[i].name} - attempts: ${diff[i].attempts}, time: ${diff[i].playTime}`):
+                diff[i] = '--- | | ---';
             }                        
         }            
         //let playerResult = ${playerName} - attempts: ${count}, time: ${time}
         $('.highscores').click(function() {   
+            console.log(rankMedium)
             $('.listHighscores').addClass('active');  
             $('.fa-angle-left').hide(); 
             $('.fa-angle-right').show();             
@@ -580,6 +595,9 @@ $(document).ready(function() {
         $(window).on('load', function() {
             $('.playerSign').fadeIn(1000); 
             $('.start').hide();
+            for(i=0; i<3; i++) {               
+                storageScores[i].slice(JSON.parse(localStorage.getItem(storageNames[i])));
+            }
         })  
         $('#sign').click(function() {            
             playerName = $('#player').val();

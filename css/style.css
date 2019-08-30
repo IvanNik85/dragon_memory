@@ -2,7 +2,10 @@
     margin: 0;
     padding: 0; 
     box-sizing: border-box;  
-    user-select: none;
+    user-select: none;   
+}
+body {
+    cursor: url('../images/mouse-arrow.png'), auto;
 }
 .wrapper {
     background: url(../images/cave.jpg) no-repeat center;
@@ -19,7 +22,7 @@
 }
 .menuWrap {
     background-color: rgba(0, 0, 0, 0.3);
-    height: 100%;
+    height: 100%;    
 }
 #dragon {
     position: absolute;
@@ -154,17 +157,17 @@
 #myCanvas {
     display: block;
     margin: auto;
-   position: relative;  
+    position: relative;  
 }
 .menuButtons #myCanvasTime {   
     position: absolute;    
-   left: 0;
-   right: 0; 
-   margin: 0 auto;    
-   bottom: 30px;  
-   z-index: 1;
+    left: 0;
+    right: 0; 
+    margin: 0 auto;    
+    bottom: 30px;  
+    z-index: 1;
 }
-.difficulty {
+.difficulty {        
     position: relative;
     width: 140px;
     height: 40px;
@@ -175,7 +178,7 @@
     z-index: 2;
 }
 .difficulty:hover {
-    background-color:rgba(62, 0, 45, 0.8); 
+    background-color:rgba(62, 0, 45, 0.8);     
 }
 .cardBack, .highscores, .timer{
     position: relative;
@@ -594,6 +597,13 @@ transform: scale(.97);
     .fa-angle-left:hover, .fa-angle-right:hover {
         position: absolute;
         top: 5.5%;
+    }
+    .mainMenu {
+        min-height: 100vh;  
+    }
+    .mainMenu .main {
+        margin-top: 0px;
+        min-height: 100%;
     }
 }
 @media (max-width: 576px) {

@@ -1,4 +1,4 @@
-# dragon_memory ver 0.8
+# dragon_memory 
 
 A game created on the model of a classic game of memory with the theme of dragons.<br>
 Contains:<br>
@@ -12,7 +12,7 @@ The choice of 50 different, randomly selected dragon cards will ensure a diversi
 
 JavaScript, Jquery, Bootstrap 4, HTML5, CSS3 technologies were used for the development of the game.
 
-# dragon_memory ver 0.8
+# dragon_memory 
 
 Igra kreirana po uzoru na klasicnu igru memorije sa temom zmajeva.<br>
 Sadrzi:<br>

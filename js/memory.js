@@ -51,6 +51,7 @@ $(document).ready(function() {
     $('.start').click(start);    
     function start() {         
         randomiseDragons(); 
+        setTimeout(slideUpMenu, 200);   
         size = 10;
         $('#num').text(0); 
         resetTimer();       
@@ -482,7 +483,7 @@ $(document).ready(function() {
         $(window).resize(() => {  
             slideUpMenu();
         })
-        function slideUpMenu() {
+        function slideUpMenu() {           
             $(this).width() < 975 ?                
             $('.menuBtns').slideUp() :    
             $('.menuBtns').slideDown(); 

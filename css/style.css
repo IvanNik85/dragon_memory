@@ -19,10 +19,11 @@ body {
     background: url(../images/caveBAck.jpg) no-repeat center;
     background-size: cover;
     min-height: 100vh;
+    overflow: hidden;
 }
 .menuWrap {
     background-color: rgba(0, 0, 0, 0.3);
-    height: 100%;    
+    min-height: 100vh;    
 }
 #dragon {
     position: absolute;
@@ -269,7 +270,7 @@ body {
     align-content: center;    
     width: 400px;
     height: 300px;
-    border: 2px solid rgb(31, 22, 22);
+    border: 1px solid rgb(204, 159, 11);;
     border-radius: 4px;
     background-color: #8e0c0c;
     text-align: center; 
@@ -314,7 +315,11 @@ body {
     margin-bottom: 5px;
     padding-left: 8px;
     width: 190px;
-    height: 35px;
+    height: 35px;    
+    font-weight: 500;
+}
+#player::placeholder {
+    font-weight: normal;
 }
 .playerName {
     color: #fff;
@@ -329,11 +334,13 @@ body {
 #sign, #playerOne {
     margin-bottom: 30px;
     transform: scale(1);
-    border: 1px solid #929290; 
-    transition: .05s;  
+    border: 1px solid #bdbdbd; 
+    background: #201818;
+    color: #fff;
+    transition: .1s;  
 }
 #sign:hover, #playerOne:hover {
-    box-shadow: 5px 7px 20px #333131;
+    color: #fad232;        
 }
 #sign:focus, #playerOne:focus, #player:focus {
     outline: none;
@@ -672,7 +679,7 @@ transform: scale(.97);
     .min3, .infinity {      
         left: 70%;
         background: rgba(0, 0, 0, 0.8)
-    }    
+    } 
     .listHighscores, .listHighscoresM, .listHighscoresH {
         padding-top: 150px;
     }    
@@ -698,7 +705,10 @@ transform: scale(.97);
 @media (max-width: 420px) {
     #diff {
         top: 13.5%;
-    }
+    }    
+    .playerSign {
+        width: 95%;
+    }  
     .fa-times-circle {       
         top: 12.5%;   
         right: 15%;  
@@ -721,7 +731,7 @@ transform: scale(.97);
         display: none;
     }
     .playerSign {
-        top: 53%;
+        top: 53%;        
     }
     #diff {
         top: 6%;
@@ -748,6 +758,9 @@ transform: scale(.97);
     }
     .fa-angle-left:hover {
         right: 32%;
+    }
+    .modal-dialog .modal-content {
+        padding: 10px 2px;
     }
 }
 @media (max-width: 339px) { 

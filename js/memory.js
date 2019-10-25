@@ -1,31 +1,31 @@
 $(document).ready(function() {
-    let cardStyle;
-    let dificulty;
-    let timerReg;
+    let cardStyle, dificulty, timerReg;
     let changeTimer = []; 
     let changedTmr = false;   
     let dragons = [];
     let randomDragon = []; 
-    let playerName;
-    let time;
+    let playerName, time;
     let rank = [];
     let rankMedium = [];
     let rankHard = [];
     let size = 10; 
     let pos = true; 
     let resetTime = 0;
+    let startTime = 0;   
+    let count = 0;     
     let s = 0;
     let m = 0;
-    let aggrTime;
-    let aggrSec;
-    let minutes;   
-    let seconds; 
-    let startTime = 0;   
-    let count = 0;   
-    let textSize;     
-     
+    let aggrTime, aggrSec, minutes, seconds, textSize;          
+    init();
+    
     for(let i = 0; i < 12; i++) {
-        $('.modal-content').prepend(`<img src="./images/card${i}.png" alt="card${i}" id="card${i}" data-dismiss="modal">`);       
+        $('.modal-content').prepend(
+        `<img 
+            src="./images/card${i}.png" 
+            alt="card${i}" 
+            id="card${i}" 
+            data-dismiss="modal"
+        >`);       
     } 
 
     let cardsB = document.querySelectorAll('.modal-content img');
@@ -116,7 +116,7 @@ $(document).ready(function() {
             });
         })(); 
 
-        if(num == 12 && j < 14) { 
+        if(num === 12 && j < 14) { 
             $('.memoryGame').append(`<div class="card1"<img src="images/lastCard1.png" alt="neutral"></div>`);
             $('.card1').css('order', 16);
         }  
@@ -132,7 +132,7 @@ $(document).ready(function() {
         
         function flip() {              
             if(lockBoard) return;
-            if(this == firstCard) return;
+            if(this === firstCard) return;
             this.classList.add('flip');    
             if(!hasFlipped) {       
                 hasFlipped = true;      
@@ -141,7 +141,7 @@ $(document).ready(function() {
                 hasFlipped = false;   
                 secondCard = this;
                 $('#num').text(++count);  
-                if(firstCard.dataset.name == secondCard.dataset.name) {
+                if(firstCard.dataset.name === secondCard.dataset.name) {
                     firstCard.removeEventListener('click', flip);
                     secondCard.removeEventListener('click', flip);
                     countPair += 2;
@@ -156,7 +156,7 @@ $(document).ready(function() {
                 }             
             }  
             // Win condition and display message
-            if(cardsNumber == countPair) { 
+            if(cardsNumber === countPair) { 
                 winLose('You Win', '#15ab20');
                 switch(dificulty) {
                     case 8:
@@ -191,7 +191,7 @@ $(document).ready(function() {
                 textSize = 70;
             }   
             size++;
-            if(size == textSize) {
+            if(size === textSize) {
                 return clearInterval(interval);
             } 
             $('#winLose').html(message).css({
@@ -387,7 +387,7 @@ $(document).ready(function() {
 
         for(let i = 1; i <= 3; i++) {
             $(`.min${i}`).click(function() {
-                if(changedTmr == false) {
+                if(changedTmr === false) {
                     $('.clock').html(`0${i}:00`);
                 }               
                 m, resetTime = i;                
@@ -410,7 +410,7 @@ $(document).ready(function() {
 
         function changedTimer(self) {   
             changeTimer.push(self.innerHTML)                
-            if(changeTimer.length == 2){
+            if(changeTimer.length === 2){
                 if(changeTimer[0] != changeTimer[1]) {
                     changedTmr = true;
                 } 
@@ -431,10 +431,10 @@ $(document).ready(function() {
 
         $('.backBtn').click(function() {  
             setTimeout(slideUpMenu, 200);                   
-            if(changedTmr == true) {
+            if(changedTmr === true) {
                 resetTimer();                 
             } else if($('.clock').html() != `00:00` || pos) {
-                size == 10 && (timerReg = setInterval(timer, 1000));                     
+                size === 10 && (timerReg = setInterval(timer, 1000));                     
             }    
             changedTmr = false;   
         });
@@ -461,20 +461,20 @@ $(document).ready(function() {
             
             $('.clock').html(min + ':' + sec); 
 
-            m == 30 && winLose('You Lose', '#bb2727');            
+            m === 30 && winLose('You Lose', '#bb2727');            
         }
         function timerNeg() {            
-            if(s == 0 && s < 9) {               
+            if(s === 0 && s < 9) {               
                 m--;
                 s = 60;                
             }
             s--;  
 
-            $('.clock').html() == `00:01` && winLose('You Lose', '#bb2727');                        
+            $('.clock').html() === `00:01` && winLose('You Lose', '#bb2727');                        
         }
         function timerPos() {            
             s++; 
-            if(s == 60) {
+            if(s === 60) {
                 s = 0
                 m++;
             } 
@@ -553,14 +553,14 @@ $(document).ready(function() {
             function sort() {
                 diff.unshift(playerResult);    
                 diff.sort(function(a, b) {return a.aggregate - b.aggregate}); 
-                diff.sort(function(a, b) {if(a.aggregate == b.aggregate) {return a.attempts - b.attempts}}); 
+                diff.sort(function(a, b) {if(a.aggregate === b.aggregate) {return a.attempts - b.attempts}}); 
                 diff.pop();   
             }
                                   
-                if(diff.every((el) => el == '--- | | ---')) {    
+                if(diff.every((el) => el === '--- | | ---')) {    
                     diff.unshift(playerResult);                  
                     diff.pop();                                
-                } else if(diff.some((el) => el == '--- | | ---')){
+                } else if(diff.some((el) => el === '--- | | ---')){
                     sort();
                 } else {
                     sort(); 
@@ -573,7 +573,7 @@ $(document).ready(function() {
                 diff[i] = '--- | | ---';
             }                        
         }            
-        //let playerResult = ${playerName} - attempts: ${count}, time: ${time}
+       
         $('.highscores').click(function() {   
             console.log(rankMedium)
             $('.listHighscores').addClass('active');  
@@ -583,19 +583,11 @@ $(document).ready(function() {
         $('.fa-times-circle').click(function() {           
             $(this).parent().removeClass('active');
         });
-     
-        // $('html').click(function(e) {
-        //     //if clicked element is not your element and parents aren't your div
-        //     if (e.target.className != 'active' && $(e.target).parents('.active').length == 0) {
-        //       console.log(`Da`)
-        //     } else {
-        //         console.log(`NEEEE`)
-        //     }
-        //   });
 
-        $(window).on('load', function() {
-            $('.playerSign').fadeIn(1000); 
-            $('.start').hide();
+        function init() {
+            $('.playerSign').fadeIn(1000);             
+        }
+        $(window).on('load', function() {           
             for(i=0; i<3; i++) {               
                 storageScores[i].slice(JSON.parse(localStorage.getItem(storageNames[i])));
             }
@@ -633,7 +625,7 @@ $(document).ready(function() {
             for(let i in highscores) {    
                 $('.fa-angle-left').show(500);           
                 if($(highscores[i]).hasClass('active')) {
-                    i == 1 && $('.fa-angle-right').hide(500);
+                    i === 1 && $('.fa-angle-right').hide(500);
                     $(highscores[i]).removeClass('active');                  
                     $(highscores[(++i)]).addClass('active');
                    break;
@@ -644,7 +636,7 @@ $(document).ready(function() {
             for(let i in highscores) {    
                 $('.fa-angle-right').show(500);            
                 if($(highscores[i]).hasClass('active')) {
-                    i == 1 && $('.fa-angle-left').hide(500);
+                    i === 1 && $('.fa-angle-left').hide(500);
                     $(highscores[i]).removeClass('active');                  
                     $(highscores[(--i)]).addClass('active');
                    break;
@@ -653,7 +645,3 @@ $(document).ready(function() {
         })
 
 }); 
- 
-
-
-    

@@ -596,6 +596,7 @@ $(document).ready(function() {
             playerName = $('#player').val();
             localStorage.setItem('playerName', playerName);
             $('.playerName').html(playerName);
+            $('.menuButtons').fadeIn();
             if(playerName != '') {
                 $('.playerSign').fadeOut(500);
                 $('.start').fadeIn(500);
@@ -609,6 +610,7 @@ $(document).ready(function() {
         }); 
         $('#playerOne').click(function() {
             $('.start').fadeIn(500);
+            $('.menuButtons').fadeIn();
             playerName = 'Player1';
             localStorage.setItem('playerName', playerName);
             $('.playerName').html(playerName);

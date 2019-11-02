@@ -47,12 +47,18 @@
                                 <button class="menuBtn highscores">Highscores</button>                    
                                 <button type="button" class="menuBtn cardBack" data-toggle="modal" data-target="#myModal">Card Style</button>
                                 <button class="menuBtn timer">Timer</button> 
+                                <div class="musicBtn"><span>Music</span>
+                                    <div class="musicOne">1<img src="./images/music-note.png" alt="note"></i></div>
+                                    <div class="musicTwo">2<img src="./images/music-note.png" alt="note"></div>
+                                    <div class="musicThree">3<img src="./images/music-note.png" alt="note"></div>
+                                    <div id="musicFour"><img src="./images/music-note.png" alt="note"><p class="slideLine"></p></div>
+                                </div>
                                 <button class="menuBtn difficulty">Level</button>  
                                 <button class="timeBtn min1">1 min</button>
                                 <button class="timeBtn min2">2 min</button>
                                 <button class="timeBtn min3">3 min</button>
                                 <button class="timeBtn infinity">&#8734</button>
-                                <canvas id="myCanvasTime" width="400" height="80"></canvas>   
+                                <canvas id="myCanvasTime" width="400" height="80"></canvas> 
                             </div>                                                      
                             <canvas id="myCanvas" width="400" height="80"></canvas>                          
                             <div class="btnDiv">
@@ -98,6 +104,7 @@
                             <div id="attempts"><span>Attempts:</span><span id="num">0</span></div>
                             <div class="clock">00:00</div>
                             <button id="slideOptions"><i class="fas fa-angle-down"></i></button>
+                            <div class="musicControll"><img src="./images/music-note.png" alt="note"><p class="slideLine"></p></div>
                         </div>
                     </div>
                     <div class="col-lg-9" id="game">
@@ -108,7 +115,16 @@
                 </div>
             </div>
         </div>
-    </div>    
+    </div>        
+    <audio loop class="mainAudio">           
+            <source src="/audio/audio1.mp3" type="audio/mp3">	   
+    </audio>
+    <audio loop class="inGameAudio">           
+            <source src="/audio/audio2.mp3" type="audio/mp3">	   
+    </audio>
+    <audio loop class="inGameAudioTwo">           
+        <source src="/audio/audio3.mp3" type="audio/mp3">	   
+</audio>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script src="js/memory.js"></script>
 </body>

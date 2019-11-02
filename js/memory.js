@@ -15,8 +15,65 @@ $(document).ready(function() {
     let count = 0;     
     let s = 0;
     let m = 0;
-    let aggrTime, aggrSec, minutes, seconds, textSize;          
-    init();
+    let aggrTime, aggrSec, minutes, seconds, textSize;   
+    const inGameAudio = $(".inGameAudio");
+    const inGameAudioTwo = $(".inGameAudioTwo");   
+    const mainAudio = $(".mainAudio");   
+    init();    
+    
+    //Music button animations
+    const $musicBtn = $('.musicBtn');
+    const $musicText = $musicBtn.find('span');
+    const $musicDiv = $musicBtn.find('div');
+    const $musicOne = $musicBtn.find('.musicOne');
+    const $musicTwo = $musicBtn.find('.musicTwo');
+    const $musicThree = $musicBtn.find('.musicThree');
+    const $musicFour = $musicBtn.find('#musicFour');
+    const musicData = [mainAudio, inGameAudio, inGameAudioTwo];
+    const $musicControll = $('.musicControll');
+    //Main button that triggers animation and play/stop buttons
+    $musicBtn.click(music);
+    function music() {
+        $musicBtn.toggleClass('music1');       
+        $musicDiv.toggleClass('animDiv');       ;
+        $musicText.fadeToggle(250);      
+    }
+    $musicOne.click(function() {
+        stopAudio();
+        mainAudio.get(0).play();   
+        musicLine(true);      
+    });
+    $musicTwo.click(function() {
+        stopAudio();
+        inGameAudio.get(0).play();    
+        musicLine(true);    
+    });
+    $musicThree.click(function() {
+        stopAudio();
+        inGameAudioTwo.get(0).play(); 
+        musicLine(true); 
+    });
+    $musicFour.click(stopAudio);
+
+    function stopAudio() {   
+        musicData.forEach(song => {    
+            song.get(0).pause();
+            song.get(0).currentTime = 0;        
+        });
+    }
+    //Stopping music buttons and function
+    $musicControll.click(musicStop);
+    $musicFour.click(musicStop);   
+
+    function musicStop() {
+        musicLine(false);
+        stopAudio();
+    }
+    //determining whether music button line is crossed or not and deciding when to cross out
+    function musicLine(condition) {
+        $('.slideLine').hasClass('changeLine') === condition && 
+        $('.slideLine').toggleClass('changeLine');
+    }
     
     for(let i = 0; i < 12; i++) {
         $('.modal-content').prepend(
@@ -50,8 +107,9 @@ $(document).ready(function() {
 
     $('.start').click(start);    
     function start() {         
-        randomiseDragons(); 
-        setTimeout(slideUpMenu, 200);   
+        randomiseDragons();     
+        $musicBtn.hasClass('music1') && music();    
+        setTimeout(slideUpMenu, 200);          
         size = 10;
         $('#num').text(0); 
         resetTimer();       
@@ -430,6 +488,7 @@ $(document).ready(function() {
         });
 
         $('.backBtn').click(function() {  
+            $musicBtn.hasClass('music1') && music();
             setTimeout(slideUpMenu, 200);                   
             if(changedTmr === true) {
                 resetTimer();                 
@@ -597,6 +656,7 @@ $(document).ready(function() {
             localStorage.setItem('playerName', playerName);
             $('.playerName').html(playerName);
             $('.menuButtons').fadeIn();
+            mainAudio.get(0).play();   
             if(playerName != '') {
                 $('.playerSign').fadeOut(500);
                 $('.start').fadeIn(500);
@@ -614,7 +674,8 @@ $(document).ready(function() {
             playerName = 'Player1';
             localStorage.setItem('playerName', playerName);
             $('.playerName').html(playerName);
-            $('.playerSign').fadeOut(500);            
+            $('.playerSign').fadeOut(500); 
+            mainAudio.get(0).play();             
         }); 
         
         $(window).resize(function() {

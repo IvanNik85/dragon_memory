@@ -20,9 +20,11 @@ $(document).ready(function() {
     const inGameAudioTwo = $(".inGameAudioTwo");   
     const mainAudio = $(".mainAudio");   
     init();    
-    
-    //Music button animations
-    const $musicBtn = $('.musicBtn');
+    // Cache DOM
+    const $window = $(window);
+    const $mainMenu = $('.mainMenu');
+    const $wrapper = $('.wrapper');
+    const $musicBtn = $mainMenu.find('.musicBtn');
     const $musicText = $musicBtn.find('span');
     const $musicDiv = $musicBtn.find('div');
     const $musicOne = $musicBtn.find('.musicOne');
@@ -30,53 +32,71 @@ $(document).ready(function() {
     const $musicThree = $musicBtn.find('.musicThree');
     const $musicFour = $musicBtn.find('#musicFour');
     const musicData = [mainAudio, inGameAudio, inGameAudioTwo];
-    const $musicControll = $('.musicControll');
-    //Main button that triggers animation and play/stop buttons
+    const $musicControll = $wrapper.find('.musicControll');
+    const $slideLine = $('.slideLine');
+    const $myCanvasTime = $mainMenu.find('#myCanvasTime');
+    const $myCanvas = $mainMenu.find('#myCanvas');
+    const $modalContent = $mainMenu.find('.modal-content');
+    const $start = $mainMenu.find('.start');
+    const $num = $mainMenu.find('#num');
+    const $memoryGame = $wrapper.find('.memoryGame');
+    const $clock = $wrapper.find('.clock');
+    const $btnDiv = $mainMenu.find('.btnDiv');
+    const $newGame = $wrapper.find('#newGame');
+    const $difficulty = $mainMenu.find('.difficulty');
+    const $timer = $mainMenu.find('.timer');
+    const $timeBtn = $mainMenu.find('.timeBtn');
+    const $options = $wrapper.find('#options');
+    const $infinity = $mainMenu.find('.infinity');
+    const $backBtn = $('.backBtn');
+
+    // Bind events
     $musicBtn.click(music);
+    $musicOne.click(audio(mainAudio));
+    $musicTwo.click(audio(inGameAudio)); 
+    $musicThree.click(audio(inGameAudioTwo));
+    $musicFour.click(musicStop);   
+    $musicControll.click(musicStop);
+    $start.click(start); 
+    $newGame.click(newGame);
+    $timer.click(timerAnimate);
+
+    //Music button animations
+    
+    //Main button function that trigger animation 
     function music() {
         $musicBtn.toggleClass('music1');       
-        $musicDiv.toggleClass('animDiv');       ;
-        $musicText.fadeToggle(250);      
-    }
-    $musicOne.click(function() {
-        stopAudio();
-        mainAudio.get(0).play();   
-        musicLine(true);      
-    });
-    $musicTwo.click(function() {
-        stopAudio();
-        inGameAudio.get(0).play();    
-        musicLine(true);    
-    });
-    $musicThree.click(function() {
-        stopAudio();
-        inGameAudioTwo.get(0).play(); 
-        musicLine(true); 
-    });
-    $musicFour.click(stopAudio);
-
-    function stopAudio() {   
+        $musicDiv.toggleClass('animDiv');       
+        $musicText.fadeToggle(150);      
+    }    
+    // Play song/stop another
+    function audio(song) {
+        return function() {
+            audioFour();
+            song.get(0).play();   
+            musicLine(true);
+        }              
+    }     
+    // Pause current song and reset play time
+    function audioFour() {   
         musicData.forEach(song => {    
             song.get(0).pause();
             song.get(0).currentTime = 0;        
         });
     }
-    //Stopping music buttons and function
-    $musicControll.click(musicStop);
-    $musicFour.click(musicStop);   
-
+    // Stopping music function   
     function musicStop() {
         musicLine(false);
-        stopAudio();
+        audioFour();
     }
-    //determining whether music button line is crossed or not and deciding when to cross out
+    // Determining whether music button line is crossed or not and deciding when to cross out
     function musicLine(condition) {
-        $('.slideLine').hasClass('changeLine') === condition && 
-        $('.slideLine').toggleClass('changeLine');
+        $slideLine.hasClass('changeLine') === condition && 
+        $slideLine.toggleClass('changeLine');
     }
     
     for(let i = 0; i < 12; i++) {
-        $('.modal-content').prepend(
+        $modalContent.prepend(
         `<img 
             src="./images/card${i}.png" 
             alt="card${i}" 
@@ -101,17 +121,16 @@ $(document).ready(function() {
     }
     
     function hide(par) {
-        $('#myCanvas').hide();
+        $myCanvas.hide();
         par.parentElement.style.visibility = 'hidden'; 
     }
-
-    $('.start').click(start);    
+    // Function that starts the game, generate card fields   
     function start() {         
         randomiseDragons();     
         $musicBtn.hasClass('music1') && music();    
         setTimeout(slideUpMenu, 200);          
         size = 10;
-        $('#num').text(0); 
+        $num.text(0); 
         resetTimer();       
         switch(dificulty) {
             case 8:
@@ -119,14 +138,14 @@ $(document).ready(function() {
                 break; 
             case 12:
                 dificultyLevel(12, cardStyle || 'card1');
-                $('.memoryGame .card').css({
+                $memoryGame.find('.card').css({
                     width: 'calc(20% - 6px)',
                     height: 'calc(20% - 6px)'
                 });            
                 break; 
             case 18:
                 dificultyLevel(18, cardStyle || 'card1');
-                $('.memoryGame .card').css({
+                $memoryGame.find('.card').css({
                     width: 'calc(16.666% - 6px)',
                     height: 'calc(16.666% - 6px)'
                 }) 
@@ -136,8 +155,8 @@ $(document).ready(function() {
                 changeTimer = ['∞'];
                 dificulty = 8;
         }
-        $('.wrapper').show();
-        $('.mainMenu').hide();        
+        $wrapper.show();
+        $mainMenu.hide();        
     }
      
     function randomiseDragons() {
@@ -153,13 +172,11 @@ $(document).ready(function() {
     }    
 
     function dificultyLevel(num, back) {  
-        console.log(dragons);
-        console.log(randomDragon);
-        $('.memoryGame').empty();
-        $('.memoryGame').append('<div id="overlay"><h1 id="winLose"></h1></div>')
+        $memoryGame.empty();
+        $memoryGame.append('<div id="overlay"><h1 id="winLose"></h1></div>')
         for(i = 0; i < 2; i++) {
             for(j = 1; j <= num; j++) {                             
-                $('.memoryGame').append(`<div class="card" data-name="dragon${randomDragon[j]}">
+                $memoryGame.append(`<div class="card" data-name="dragon${randomDragon[j]}">
                 <img class="front" src="images/${randomDragon[j]}.jpg" alt="dragon${randomDragon[j]}">
                 <img class="back" src="images/${back}.png" alt="cardBack"> 
                 </div>`);
@@ -167,7 +184,7 @@ $(document).ready(function() {
         }  
 
         (function shufle() {
-            $('.card').each(function() {
+            $memoryGame.find('.card').each(function() {
                 $(this).css({
                     'order': Math.floor(Math.random() * 16)
                 });
@@ -175,7 +192,7 @@ $(document).ready(function() {
         })(); 
 
         if(num === 12 && j < 14) { 
-            $('.memoryGame').append(`<div class="card1"<img src="images/lastCard1.png" alt="neutral"></div>`);
+            $memoryGame.append(`<div class="card1"<img src="images/lastCard1.png" alt="neutral"></div>`);
             $('.card1').css('order', 16);
         }  
  
@@ -198,7 +215,7 @@ $(document).ready(function() {
             } else {        
                 hasFlipped = false;   
                 secondCard = this;
-                $('#num').text(++count);  
+                $num.text(++count);  
                 if(firstCard.dataset.name === secondCard.dataset.name) {
                     firstCard.removeEventListener('click', flip);
                     secondCard.removeEventListener('click', flip);
@@ -234,16 +251,16 @@ $(document).ready(function() {
 
     function winLose(message, colorWL) {               
         let interval = setInterval(animateWinLose, 10);
-        $('#overlay').css({
+        $memoryGame.find('#overlay').css({
             'z-index': 1,
             'background-color': 'rgba(0, 0, 0, 0.7)'
         });
         function animateWinLose() {           
-            if($(window).width() > 1200) {
+            if($window.width() > 1200) {
                 textSize = 150;  
-            } else if ($(window).width() > 768 && $(window).width() < 1200) {
+            } else if ($window.width() > 768 && $window.width() < 1200) {
                 textSize = 115; 
-            } else if ($(window).width() > 450 && $(window).width() < 768) {
+            } else if ($window.width() > 450 && $window.width() < 768) {
                 textSize = 95;
             } else {
                 textSize = 70;
@@ -272,48 +289,45 @@ $(document).ready(function() {
             minutes < 9 && (minutes = '0' + minutes);         
             time = `${minutes}:${seconds}`;           
         } else {
-            time = $('.clock').html();
+            time = $clock.html();
             aggrSec = m*60 + s;
-        }           
-        console.log(time)
-    }            
+        }   
+    }         
     
-    $('#newGame').click(function(){ 
+    function newGame() { 
         start(); 
-    })    
+    }    
 
     let c = document.getElementById("myCanvas");
     let ctx = c.getContext("2d");    
     ctx.strokeStyle = '#fad232';
     ctx.lineWidth = 2.5;
     let called = false;
-    $('.difficulty').click(function(){    
-        console.log(rank)
-        console.log(rankMedium)
-        console.log(rankHard)
-        $('#myCanvas').show();     
-        $('.btnDiv').css('visibility', 'hidden');   
-        if($(window).width() < 576) {
-            $('#myCanvas, #myCanvasTime').hide();
-            $('.btnDiv').fadeIn(270);
+    $difficulty.click(function(){   
+        $myCanvas.show();     
+        $btnDiv.css('visibility', 'hidden');   
+        if($window.width() < 576) {
+            $myCanvas.hide();
+            $myCanvasTime.hide();
+            $btnDiv.fadeIn(270);
             setTimeout(function() {
-                $('.btnDiv').css('visibility', 'visible'); 
+                $btnDiv.css('visibility', 'visible'); 
             },230);   
         } else {       
             if(called) {            
                 reset(); 
                 setTimeout(function() {
-                    $('.btnDiv').css('visibility', 'visible'); 
+                    $btnDiv.css('visibility', 'visible'); 
                 },900)                                 
             } else {
                 animate();
-                $('.btnDiv').css('visibility', 'visible'); 
+                $btnDiv.css('visibility', 'visible'); 
                 called = true;             
             } 
         }       
     })     
 
-    $('.btnDiv').css('display', 'none');
+    $btnDiv.css('display', 'none');
         let x = 0;    
         let y = 200;   
         let z = 200;
@@ -340,37 +354,39 @@ $(document).ready(function() {
                 ctx.lineTo(350,q);   
                 q += 5;                
             } else {                
-                $('.btnDiv').fadeIn();
+                $btnDiv.fadeIn();
             }    
             ctx.stroke();             
         }    
         
-        let called1 = false;     
-        $('.timer').click(function(){            
-            $('.timeBtn').css('visibility', 'hidden');  
-            if($(window).width() < 576) {
-                $('#myCanvas, #myCanvasTime').hide();
-                $('.timeBtn').fadeIn(270);
+        let called1 = false;    
+
+        function timerAnimate(){            
+            $timeBtn.css('visibility', 'hidden');  
+            if($window.width() < 576) {
+                $myCanvas.hide();
+                $myCanvasTime.hide();
+                $timeBtn.fadeIn(270);
                 setTimeout(function() {
-                    $('.timeBtn').css('visibility', 'visible'); 
+                    $timeBtn.css('visibility', 'visible'); 
                 },230);   
             } else {                     
                 if(called1) {                                     
                     resetTimeCanvas();                              
                     setTimeout(function() {
-                        $('.timeBtn').css('visibility', 'visible'); 
+                        $timeBtn.css('visibility', 'visible'); 
                     },600)                                 
                 } else {  
                     resetTimeCanvas();               
                     animateTime();                
-                    $('.timeBtn').css('visibility', 'visible'); 
+                    $timeBtn.css('visibility', 'visible'); 
                     called1 = true;             
                 }        
             }
-        });
+        }
 
         function resetTimeCanvas() {
-            $('#myCanvasTime').show();                   
+            $myCanvasTime.show();                   
             cont.clearRect(0, 0, 400, 80);                      
             g = 130; 
             h = 270;  
@@ -380,7 +396,7 @@ $(document).ready(function() {
             i = 1*Math.PI;   
         }
 
-        $('.timeBtn').css('display', 'none');
+        $timeBtn.css('display', 'none');
         let t = document.getElementById("myCanvasTime");
         let cont = t.getContext("2d");    
         cont.strokeStyle = '#fad232';
@@ -416,13 +432,13 @@ $(document).ready(function() {
                  l += 0.075;      
                  i -= 0.075;          
             } else {
-                $('.timeBtn').show(); 
+                $timeBtn.show(); 
             }
             cont.stroke();             
          }   
 
         function reset() {   
-            $('#myCanvas').show();                   
+            $myCanvas.show();                   
             ctx.clearRect(0, 0, 400, 80);                      
             x = 0;    
             y = 200;   
@@ -434,10 +450,10 @@ $(document).ready(function() {
             s = 0;  
             if(pos){  
                 m = 0;
-                $('.clock').html(`0${m}:00`);
+                $clock.html(`0${m}:00`);
             } else {
                 m = resetTime; 
-                $('.clock').html(`0${m}:00`);
+                $clock.html(`0${m}:00`);
             } 
             clearInterval(timerReg); 
             timerReg = setInterval(timer, 1000); 
@@ -446,7 +462,7 @@ $(document).ready(function() {
         for(let i = 1; i <= 3; i++) {
             $(`.min${i}`).click(function() {
                 if(changedTmr === false) {
-                    $('.clock').html(`0${i}:00`);
+                    $clock.html(`0${i}:00`);
                 }               
                 m, resetTime = i;                
                 pos = false;    
@@ -457,7 +473,7 @@ $(document).ready(function() {
             });
         }
 
-        $('.infinity').click(function() {
+        $infinity.click(function() {
             hideTimerBtns();  
             m, resetTime = 0;
             pos = true;  
@@ -476,23 +492,22 @@ $(document).ready(function() {
             }                             
         }
 
-        $('#options').click(function() {           
-            console.log(count)
-            $('.backBtn').show();
-            $('.mainMenu').show();
-            $('.wrapper').hide(); 
-            $('#myCanvas').css({display: "block"}) && hide(document.querySelector('.one')); 
-            $('#myCanvasTime').css({display: "block"}) && hideTimerBtns();           
-            $('.backBtn').on('click', hideMenu); 
+        $options.click(function() {   
+            $backBtn.show();
+            $mainMenu.show();
+            $wrapper.hide(); 
+            $myCanvas.css({display: "block"}) && hide(document.querySelector('.one')); 
+            $myCanvasTime.css({display: "block"}) && hideTimerBtns();           
+            $backBtn.on('click', hideMenu); 
             clearInterval(timerReg);
         });
 
-        $('.backBtn').click(function() {  
+        $backBtn.click(function() {  
             $musicBtn.hasClass('music1') && music();
             setTimeout(slideUpMenu, 200);                   
             if(changedTmr === true) {
                 resetTimer();                 
-            } else if($('.clock').html() != `00:00` || pos) {
+            } else if($clock.html() != `00:00` || pos) {
                 size === 10 && (timerReg = setInterval(timer, 1000));                     
             }    
             changedTmr = false;   
@@ -503,13 +518,13 @@ $(document).ready(function() {
                 let back = document.querySelectorAll('.back');
                 back.forEach(card => card.setAttribute(`src`, `images/${cardStyle}.png`));                
             }               
-            $('.mainMenu').hide();
-            $('.wrapper').show(); 
+            $mainMenu.hide();
+            $wrapper.show(); 
         }        
         
         function hideTimerBtns() {
-            $('.timeBtn').css('visibility', 'hidden');
-            $('#myCanvasTime').hide();
+            $timeBtn.css('visibility', 'hidden');
+            $myCanvasTime.hide();
         }
         
         function timer() {
@@ -518,7 +533,7 @@ $(document).ready(function() {
             s > 9 ? sec = s : sec = '0' + s; 
             m > 9 ? min = m : min = '0' + m; 
             
-            $('.clock').html(min + ':' + sec); 
+            $clock.html(min + ':' + sec); 
 
             m === 30 && winLose('You Lose', '#bb2727');            
         }
@@ -529,7 +544,7 @@ $(document).ready(function() {
             }
             s--;  
 
-            $('.clock').html() === `00:01` && winLose('You Lose', '#bb2727');                        
+            $clock.html() === `00:01` && winLose('You Lose', '#bb2727');                        
         }
         function timerPos() {            
             s++; 
@@ -539,7 +554,7 @@ $(document).ready(function() {
             } 
         }
         let menuBtn = true;
-        $(window).resize(() => {  
+        $window.resize(() => {  
             slideUpMenu();
         })
         function slideUpMenu() {           
@@ -573,8 +588,7 @@ $(document).ready(function() {
         
        function generateHighscores(par, par2, par3) { 
             for(let i = 0; i < 10; i++) {
-                console.log(par.length)
-               par.length < 10 ? par.push('--- | | ---') : null;                  
+                par.length < 10 ? par.push('--- | | ---') : null;                  
                 par[i] != '--- | | ---' ? 
                 $(par3).append(`<p>${i+1}.<span class="${par2}${i}">${ par[i].name} - attempts: ${par[i].attempts}, time: ${par[i].playTime}</span></p>`):
                 $(par3).append(`<p>${i+1}.<span class="${par2}${i}">${par[i]}</span></p>`);            
@@ -606,9 +620,7 @@ $(document).ready(function() {
                 attempts: count,
                 playTime: time,
                 aggregate: aggrSec
-            }               
-            console.log(playerResult);
-            console.log(rank)           
+            }     
             function sort() {
                 diff.unshift(playerResult);    
                 diff.sort(function(a, b) {return a.aggregate - b.aggregate}); 
@@ -633,8 +645,7 @@ $(document).ready(function() {
             }                        
         }            
        
-        $('.highscores').click(function() {   
-            console.log(rankMedium)
+        $('.highscores').click(function() { 
             $('.listHighscores').addClass('active');  
             $('.fa-angle-left').hide(); 
             $('.fa-angle-right').show();             
@@ -646,7 +657,7 @@ $(document).ready(function() {
         function init() {
             $('.playerSign').fadeIn(1000);             
         }
-        $(window).on('load', function() {           
+        $window.on('load', function() {           
             for(i=0; i<3; i++) {               
                 storageScores[i].slice(JSON.parse(localStorage.getItem(storageNames[i])));
             }
@@ -659,7 +670,7 @@ $(document).ready(function() {
             mainAudio.get(0).play();   
             if(playerName != '') {
                 $('.playerSign').fadeOut(500);
-                $('.start').fadeIn(500);
+                $start.fadeIn(500);
                 return;
             } 
             Swal.fire({
@@ -669,7 +680,7 @@ $(document).ready(function() {
               })           
         }); 
         $('#playerOne').click(function() {
-            $('.start').fadeIn(500);
+            $start.fadeIn(500);
             $('.menuButtons').fadeIn();
             playerName = 'Player1';
             localStorage.setItem('playerName', playerName);
@@ -678,9 +689,10 @@ $(document).ready(function() {
             mainAudio.get(0).play();             
         }); 
         
-        $(window).resize(function() {
+        $window.resize(function() {
             if($(this).width() < 576) {
-                $('#myCanvas, #myCanvasTime').hide(); 
+                $myCanvas.hide();
+                $myCanvasTime.hide(); 
             }
         })               
    

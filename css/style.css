@@ -214,8 +214,7 @@ body {
     border-radius: 4px;
     color: #fff;
     text-align: center;
-    line-height: 35px;
-    transition: .4s; 
+    line-height: 35px;  
     cursor: pointer;
     z-index: 2;
 }
@@ -223,6 +222,7 @@ body {
     width: 200px;   
     border: 2px solid transparent;
     background: transparent !important;
+    transition: .3s; 
 }
 .animDiv {
     animation: disassembly .4s forwards;    

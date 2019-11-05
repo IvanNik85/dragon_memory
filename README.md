@@ -4,7 +4,7 @@ https://dragon-memory.netlify.com
 
 A game created on the model of a classic game of memory with the theme of dragons.<br>
 Contains:<br>
-    • the starting menu page - where it's possible to see the top results, select one of the many card backgrounds, set the timer for each gaming session and choose one of the three offered difficulty levels, <br>
+    • the starting menu page - where it's possible to see the top results, select one of the many card backgrounds, set the timer for each gaming session, choose background music and pick one of the three offered difficulty levels, <br>
     • game page.
 
 When a game is loaded for a first time it is necessary that the player enter his name (nickname) or register as a guest. His results are compared with the results of other players after the game, and the best 10 are recorded according to the times and attempts. Highscores are divided by pre-selected difficulty levels and sorted within certain difficulty categories.
@@ -18,7 +18,7 @@ JavaScript, Jquery, Bootstrap 4, HTML5, CSS3 technologies were used for the deve
 
 Igra kreirana po uzoru na klasicnu igru memorije sa temom zmajeva.<br>
 Sadrzi:<br>
-    • početnu meni stranu, gde je moguce videti top rezultate, odabrati neku od mnogobrojnih tema poleđina karata, odrediti tajmer za svaku igračku sesiju ili izabrati jedan od tri ponuđena nivoa tezine, <br>
+    • početnu meni stranu, gde je moguce videti top rezultate, odabrati neku od mnogobrojnih tema poleđina karata, odrediti tajmer za svaku igračku sesiju, izabrati pozadinsku muziku i odabrati jedan od tri ponuđena nivoa tezine, <br>
     • stranu sa samom igrom.
 
 Prilikom učitavanja strane potrebno je da igrač unese svoje ime (nadimak) ili se prijavi kao gost. Njegovi rezultati se nakon odigrane igre upoređuju sa rezultatima ostalih igraca i najboljih 10 se beleže shodno ostvarenim vremenima i pokusajima. Top rezultati su razvrstani po prethodno odabranim nivoima težine i sortirani u okviru određene težinske kategorije.

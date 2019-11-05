@@ -19,7 +19,7 @@ $(document).ready(function() {
     const inGameAudio = $(".inGameAudio");
     const inGameAudioTwo = $(".inGameAudioTwo");   
     const mainAudio = $(".mainAudio");   
-    init();    
+        
     // Cache DOM
     const $window = $(window);
     const $mainMenu = $('.mainMenu');
@@ -38,7 +38,7 @@ $(document).ready(function() {
     const $myCanvas = $mainMenu.find('#myCanvas');
     const $modalContent = $mainMenu.find('.modal-content');
     const $start = $mainMenu.find('.start');
-    const $num = $mainMenu.find('#num');
+    const $num = $wrapper.find('#num');
     const $memoryGame = $wrapper.find('.memoryGame');
     const $clock = $wrapper.find('.clock');
     const $btnDiv = $mainMenu.find('.btnDiv');
@@ -48,7 +48,19 @@ $(document).ready(function() {
     const $timeBtn = $mainMenu.find('.timeBtn');
     const $options = $wrapper.find('#options');
     const $infinity = $mainMenu.find('.infinity');
-    const $backBtn = $('.backBtn');
+    const $backBtn = $mainMenu.find('.backBtn');
+    const $menuBtns = $wrapper.find('.menuBtns');
+    const $slideOptions = $wrapper.find('#slideOptions');
+    const $highscores = $mainMenu.find('.highscores');
+    const $exitScores = $mainMenu.find('.fa-times-circle');
+    const $playerSign = $mainMenu.find('.playerSign');
+    const $sign = $mainMenu.find('#sign');
+    const $player = $mainMenu.find('#player');
+    const $playerName = $wrapper.find('.playerName');
+    const $menuButtons = $mainMenu.find('.menuButtons');
+    const $playerOne = $mainMenu.find('#playerOne');
+    const $scoreRight = $mainMenu.find('.fa-angle-right');
+    const $scoreLeft = $('.fa-angle-left');
 
     // Bind events
     $musicBtn.click(music);
@@ -60,7 +72,18 @@ $(document).ready(function() {
     $start.click(start); 
     $newGame.click(newGame);
     $timer.click(timerAnimate);
+    $infinity.click(infiniteTimer);
+    $options.click(optionsMenu);
+    $backBtn.click(backToGame);
+    $slideOptions.click(slideOptions);
+    $highscores.click(showHighscores);
+    $exitScores.click(exitScores);
+    $sign.click(signIn);
+    $playerOne.click(playerLog);
+    $scoreRight.click(rightScore);
+    $scoreLeft.click(leftScore);
 
+    init();
     //Music button animations
     
     //Main button function that trigger animation 
@@ -458,7 +481,7 @@ $(document).ready(function() {
             clearInterval(timerReg); 
             timerReg = setInterval(timer, 1000); 
         }
-
+        // Different timer settings (1,2,3 min)
         for(let i = 1; i <= 3; i++) {
             $(`.min${i}`).click(function() {
                 if(changedTmr === false) {
@@ -472,15 +495,15 @@ $(document).ready(function() {
                 startTime = i; 
             });
         }
-
-        $infinity.click(function() {
+        // Infinite timer (limited to 30min :)        
+        function infiniteTimer() {
             hideTimerBtns();  
             m, resetTime = 0;
             pos = true;  
             startTime = 0; 
             changedTmr = false;    
             changedTimer(this);
-        }); 
+        } 
 
         function changedTimer(self) {   
             changeTimer.push(self.innerHTML)                
@@ -491,8 +514,8 @@ $(document).ready(function() {
                 changeTimer.shift();
             }                             
         }
-
-        $options.click(function() {   
+        
+        function optionsMenu() {   
             $backBtn.show();
             $mainMenu.show();
             $wrapper.hide(); 
@@ -500,9 +523,9 @@ $(document).ready(function() {
             $myCanvasTime.css({display: "block"}) && hideTimerBtns();           
             $backBtn.on('click', hideMenu); 
             clearInterval(timerReg);
-        });
-
-        $backBtn.click(function() {  
+        }
+        
+        function backToGame() {  
             $musicBtn.hasClass('music1') && music();
             setTimeout(slideUpMenu, 200);                   
             if(changedTmr === true) {
@@ -511,7 +534,7 @@ $(document).ready(function() {
                 size === 10 && (timerReg = setInterval(timer, 1000));                     
             }    
             changedTmr = false;   
-        });
+        }
         
         function hideMenu() {
             if(cardStyle) {
@@ -559,19 +582,19 @@ $(document).ready(function() {
         })
         function slideUpMenu() {           
             $(this).width() < 975 ?                
-            $('.menuBtns').slideUp() :    
-            $('.menuBtns').slideDown(); 
+            $menuBtns.slideUp() :    
+            $menuBtns.slideDown(); 
 
-            if($('.menuBtns').is(":visible")) {
-                $('#slideOptions').css('transform', 'rotate(0deg)');
+            if($menuBtns.is(":visible")) {
+                $slideOptions.css('transform', 'rotate(0deg)');
                 menuBtn = true;
             } 
-        }              
-       
-        $('#slideOptions').click(function(){
-            $('.menuBtns').slideToggle();  
+        }     
+        
+        function slideOptions(){
+            $menuBtns.slideToggle();  
             rotateBtn(this);          
-        });
+        }
 
         function rotateBtn(a) {
             if(menuBtn) {
@@ -643,33 +666,35 @@ $(document).ready(function() {
                 diff[i] != '--- | | ---' ? $(`.${storageName}${i}`).html(`${ diff[i].name} - attempts: ${diff[i].attempts}, time: ${diff[i].playTime}`):
                 diff[i] = '--- | | ---';
             }                        
-        }            
-       
-        $('.highscores').click(function() { 
+        }                   
+        
+        function showHighscores() { 
             $('.listHighscores').addClass('active');  
-            $('.fa-angle-left').hide(); 
-            $('.fa-angle-right').show();             
-        });
-        $('.fa-times-circle').click(function() {           
+            $scoreLeft.hide(); 
+            $scoreRight.show();             
+        }
+        
+        function exitScores() {           
             $(this).parent().removeClass('active');
-        });
+        }
 
         function init() {
-            $('.playerSign').fadeIn(1000);             
+            $playerSign.fadeIn(1000);             
         }
         $window.on('load', function() {           
             for(i=0; i<3; i++) {               
                 storageScores[i].slice(JSON.parse(localStorage.getItem(storageNames[i])));
             }
         })  
-        $('#sign').click(function() {            
-            playerName = $('#player').val();
+        
+        function signIn() {            
+            playerName = $player.val();
             localStorage.setItem('playerName', playerName);
-            $('.playerName').html(playerName);
-            $('.menuButtons').fadeIn();
+            $playerName.html(playerName);
+            $menuButtons.fadeIn();
             mainAudio.get(0).play();   
             if(playerName != '') {
-                $('.playerSign').fadeOut(500);
+                $playerSign.fadeOut(500);
                 $start.fadeIn(500);
                 return;
             } 
@@ -678,45 +703,47 @@ $(document).ready(function() {
                 title: 'Please enter some value',
                 text: 'Enter your name or nickname!',                
               })           
-        }); 
-        $('#playerOne').click(function() {
+        } 
+        
+        function playerLog() {
             $start.fadeIn(500);
-            $('.menuButtons').fadeIn();
+            $menuButtons.fadeIn();
             playerName = 'Player1';
             localStorage.setItem('playerName', playerName);
-            $('.playerName').html(playerName);
-            $('.playerSign').fadeOut(500); 
+            $playerName.html(playerName);
+            $playerSign.fadeOut(500); 
             mainAudio.get(0).play();             
-        }); 
+        } 
         
         $window.resize(function() {
             if($(this).width() < 576) {
                 $myCanvas.hide();
                 $myCanvasTime.hide(); 
             }
-        })               
-   
-        $('.fa-angle-right').click(function() {
+        })         
+        
+        function rightScore() {
             for(let i in highscores) {    
-                $('.fa-angle-left').show(500);           
+                $scoreLeft.show(500);           
                 if($(highscores[i]).hasClass('active')) {
-                    i === 1 && $('.fa-angle-right').hide(500);
+                    i == 1 && $scoreRight.hide(500);
                     $(highscores[i]).removeClass('active');                  
                     $(highscores[(++i)]).addClass('active');
-                   break;
+                    break;
                 }               
             }           
-        })
-        $('.fa-angle-left').click(function() {            
+        }
+        
+        function leftScore() {            
             for(let i in highscores) {    
-                $('.fa-angle-right').show(500);            
+                $scoreRight.show(500);            
                 if($(highscores[i]).hasClass('active')) {
-                    i === 1 && $('.fa-angle-left').hide(500);
+                    i == 1 && $scoreLeft.hide(500);
                     $(highscores[i]).removeClass('active');                  
                     $(highscores[(--i)]).addClass('active');
-                   break;
+                    break;
                 }
             }           
-        })
+        }
 
 }); 

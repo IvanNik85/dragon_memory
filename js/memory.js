@@ -15,15 +15,16 @@ $(document).ready(function() {
     let count = 0;     
     let s = 0;
     let m = 0;
-    let aggrTime, aggrSec, minutes, seconds, textSize;   
-    const inGameAudio = $(".inGameAudio");
-    const inGameAudioTwo = $(".inGameAudioTwo");   
-    const mainAudio = $(".mainAudio");   
+    let aggrTime, aggrSec, minutes, seconds, textSize;  
         
     // Cache DOM
     const $window = $(window);
+    const $body = $('body');
     const $mainMenu = $('.mainMenu');
     const $wrapper = $('.wrapper');
+    const $inGameAudio = $body.find(".inGameAudio");
+    const $inGameAudioTwo = $body.find(".inGameAudioTwo");   
+    const $mainAudio = $body.find(".mainAudio");  
     const $musicBtn = $mainMenu.find('.musicBtn');
     const $musicText = $musicBtn.find('span');
     const $musicDiv = $musicBtn.find('div');
@@ -31,13 +32,14 @@ $(document).ready(function() {
     const $musicTwo = $musicBtn.find('.musicTwo');
     const $musicThree = $musicBtn.find('.musicThree');
     const $musicFour = $musicBtn.find('#musicFour');
-    const musicData = [mainAudio, inGameAudio, inGameAudioTwo];
+    const musicData = [$mainAudio, $inGameAudio, $inGameAudioTwo];
     const $musicControll = $wrapper.find('.musicControll');
+    const $loader = $body.find('.loaderDiv');
     const $slideLine = $('.slideLine');
     const $myCanvasTime = $mainMenu.find('#myCanvasTime');
     const $myCanvas = $mainMenu.find('#myCanvas');
     const $modalContent = $mainMenu.find('.modal-content');
-    const $start = $mainMenu.find('.start');
+    const $start = $body.find('.start');
     const $num = $wrapper.find('#num');
     const $memoryGame = $wrapper.find('.memoryGame');
     const $clock = $wrapper.find('.clock');
@@ -64,9 +66,9 @@ $(document).ready(function() {
 
     // Bind events
     $musicBtn.click(music);
-    $musicOne.click(audio(mainAudio));
-    $musicTwo.click(audio(inGameAudio)); 
-    $musicThree.click(audio(inGameAudioTwo));
+    $musicOne.click(audio($mainAudio));
+    $musicTwo.click(audio($inGameAudio)); 
+    $musicThree.click(audio($inGameAudioTwo));
     $musicFour.click(musicStop);   
     $musicControll.click(musicStop);
     $start.click(start); 
@@ -83,7 +85,20 @@ $(document).ready(function() {
     $scoreRight.click(rightScore);
     $scoreLeft.click(leftScore);
 
-    init();
+    //Loading animation
+    function loader() {
+        for(let i = 1; i <= 10; i++) {
+           $(`.loader .we:nth-child(${i})`)
+            .css(`animation`, `loaderStart 1.2s ${i * .1}s infinite`);
+        }   
+    }
+    loader();   
+    //Hide loader when element is loaded    
+        $mainMenu.onload = (function() {
+            $loader.css("display","none");
+            init();
+        })()  
+    
     //Music button animations
     
     //Main button function that trigger animation 
@@ -148,13 +163,13 @@ $(document).ready(function() {
         par.parentElement.style.visibility = 'hidden'; 
     }
     // Function that starts the game, generate card fields   
-    function start() {         
+    function start() {    
+        $loader.css("display","flex");      
         randomiseDragons();     
         $musicBtn.hasClass('music1') && music();    
         setTimeout(slideUpMenu, 200);          
         size = 10;
-        $num.text(0); 
-        resetTimer();       
+        $num.html(0); 
         switch(dificulty) {
             case 8:
                 dificultyLevel(8, cardStyle || 'card1'); 
@@ -177,7 +192,11 @@ $(document).ready(function() {
                 dificultyLevel(8, cardStyle || 'card1');
                 changeTimer = ['∞'];
                 dificulty = 8;
-        }
+        }       
+            $wrapper.onload = (function() {
+                $loader.css("display","none");    
+                resetTimer();             
+            })()    
         $wrapper.show();
         $mainMenu.hide();        
     }
@@ -238,7 +257,7 @@ $(document).ready(function() {
             } else {        
                 hasFlipped = false;   
                 secondCard = this;
-                $num.text(++count);  
+                $num.html(++count);  
                 if(firstCard.dataset.name === secondCard.dataset.name) {
                     firstCard.removeEventListener('click', flip);
                     secondCard.removeEventListener('click', flip);
@@ -351,399 +370,398 @@ $(document).ready(function() {
     })     
 
     $btnDiv.css('display', 'none');
-        let x = 0;    
-        let y = 200;   
-        let z = 200;
-        let q = 40; 
-        function animate() {
-           window.requestAnimationFrame(animate); 
-            if(x <= 40) { 
-                ctx.beginPath();               
-                ctx.moveTo(200,0);
-                ctx.lineTo(200,x);   
-                x += 5;  
-            } else if(y < 350 && z > 50) {
-                y += 5;  
-                z -= 5;  
-                ctx.moveTo(200,40);
-                ctx.lineTo(y,40);               
-                ctx.lineTo(z,40); 
-            } else if(q <= 80){                                                
-                ctx.moveTo(50,40);
-                ctx.lineTo(50,q);
-                ctx.moveTo(200,40);
-                ctx.lineTo(200,q);
-                ctx.moveTo(350,40);
-                ctx.lineTo(350,q);   
-                q += 5;                
-            } else {                
-                $btnDiv.fadeIn();
-            }    
-            ctx.stroke();             
+    let x = 0;    
+    let y = 200;   
+    let z = 200;
+    let q = 40; 
+    function animate() {
+        window.requestAnimationFrame(animate); 
+        if(x <= 40) { 
+            ctx.beginPath();               
+            ctx.moveTo(200,0);
+            ctx.lineTo(200,x);   
+            x += 5;  
+        } else if(y < 350 && z > 50) {
+            y += 5;  
+            z -= 5;  
+            ctx.moveTo(200,40);
+            ctx.lineTo(y,40);               
+            ctx.lineTo(z,40); 
+        } else if(q <= 80){                                                
+            ctx.moveTo(50,40);
+            ctx.lineTo(50,q);
+            ctx.moveTo(200,40);
+            ctx.lineTo(200,q);
+            ctx.moveTo(350,40);
+            ctx.lineTo(350,q);   
+            q += 5;                
+        } else {                
+            $btnDiv.fadeIn();
         }    
-        
-        let called1 = false;    
+        ctx.stroke();             
+    }    
+    
+    let called1 = false;    
 
-        function timerAnimate(){            
-            $timeBtn.css('visibility', 'hidden');  
-            if($window.width() < 576) {
-                $myCanvas.hide();
-                $myCanvasTime.hide();
-                $timeBtn.fadeIn(270);
+    function timerAnimate(){            
+        $timeBtn.css('visibility', 'hidden');  
+        if($window.width() < 576) {
+            $myCanvas.hide();
+            $myCanvasTime.hide();
+            $timeBtn.fadeIn(270);
+            setTimeout(function() {
+                $timeBtn.css('visibility', 'visible'); 
+            },230);   
+        } else {                     
+            if(called1) {                                     
+                resetTimeCanvas();                              
                 setTimeout(function() {
                     $timeBtn.css('visibility', 'visible'); 
-                },230);   
-            } else {                     
-                if(called1) {                                     
-                    resetTimeCanvas();                              
-                    setTimeout(function() {
-                        $timeBtn.css('visibility', 'visible'); 
-                    },600)                                 
-                } else {  
-                    resetTimeCanvas();               
-                    animateTime();                
-                    $timeBtn.css('visibility', 'visible'); 
-                    called1 = true;             
-                }        
-            }
+                },600)                                 
+            } else {  
+                resetTimeCanvas();               
+                animateTime();                
+                $timeBtn.css('visibility', 'visible'); 
+                called1 = true;             
+            }        
         }
+    }
 
-        function resetTimeCanvas() {
-            $myCanvasTime.show();                   
-            cont.clearRect(0, 0, 400, 80);                      
-            g = 130; 
-            h = 270;  
-            j = 2*Math.PI; 
-            k = 0*Math.PI;   
-            l = 1*Math.PI;
-            i = 1*Math.PI;   
-        }
+    function resetTimeCanvas() {
+        $myCanvasTime.show();                   
+        cont.clearRect(0, 0, 400, 80);                      
+        g = 130; 
+        h = 270;  
+        j = 2*Math.PI; 
+        k = 0*Math.PI;   
+        l = 1*Math.PI;
+        i = 1*Math.PI;   
+    }
 
-        $timeBtn.css('display', 'none');
-        let t = document.getElementById("myCanvasTime");
-        let cont = t.getContext("2d");    
-        cont.strokeStyle = '#fad232';
-        cont.lineWidth = 2.5;        
-        let g = 130; 
-        let h = 270;  
-        let j = 2*Math.PI; 
-        let k = 0*Math.PI;   
-        let l = 1*Math.PI;
-        let i = 1*Math.PI;
-        function animateTime() {
-            window.requestAnimationFrame(animateTime); 
-            if(g >= 60 || h <= 340) { 
-                 cont.beginPath();               
-                 cont.moveTo(130, 40);
-                 cont.lineTo(g, 40);
-                 cont.moveTo(270, 40);
-                 cont.lineTo(h, 40);   
-                 g -= 5; 
-                 h += 5;
-            } else if(j>=1.5*Math.PI || k <= 0.5*Math.PI ||
-                 l<=1.5*Math.PI || i>=0.5*Math.PI) { 
-                 cont.moveTo(60,40);                 
-                 cont.arc(20,40,30,2*Math.PI, j, true);
-                 cont.moveTo(60,40);
-                 cont.arc(20,40,30,0*Math.PI, k);
-                 cont.moveTo(340,40);                 
-                 cont.arc(380,40,30,1*Math.PI, l);
-                 cont.moveTo(340,40);
-                 cont.arc(380,40,30,1*Math.PI, i, true); 
-                 k += 0.075;  
-                 j -= 0.075;      
-                 l += 0.075;      
-                 i -= 0.075;          
-            } else {
-                $timeBtn.show(); 
-            }
-            cont.stroke();             
-         }   
+    $timeBtn.css('display', 'none');
+    let t = document.getElementById("myCanvasTime");
+    let cont = t.getContext("2d");    
+    cont.strokeStyle = '#fad232';
+    cont.lineWidth = 2.5;        
+    let g = 130; 
+    let h = 270;  
+    let j = 2*Math.PI; 
+    let k = 0*Math.PI;   
+    let l = 1*Math.PI;
+    let i = 1*Math.PI;
+    function animateTime() {
+        window.requestAnimationFrame(animateTime); 
+        if(g >= 60 || h <= 340) { 
+                cont.beginPath();               
+                cont.moveTo(130, 40);
+                cont.lineTo(g, 40);
+                cont.moveTo(270, 40);
+                cont.lineTo(h, 40);   
+                g -= 5; 
+                h += 5;
+        } else if(j>=1.5*Math.PI || k <= 0.5*Math.PI ||
+                l<=1.5*Math.PI || i>=0.5*Math.PI) { 
+                cont.moveTo(60,40);                 
+                cont.arc(20,40,30,2*Math.PI, j, true);
+                cont.moveTo(60,40);
+                cont.arc(20,40,30,0*Math.PI, k);
+                cont.moveTo(340,40);                 
+                cont.arc(380,40,30,1*Math.PI, l);
+                cont.moveTo(340,40);
+                cont.arc(380,40,30,1*Math.PI, i, true); 
+                k += 0.075;  
+                j -= 0.075;      
+                l += 0.075;      
+                i -= 0.075;          
+        } else {
+            $timeBtn.show(); 
+        }
+        cont.stroke();             
+        }   
 
-        function reset() {   
-            $myCanvas.show();                   
-            ctx.clearRect(0, 0, 400, 80);                      
-            x = 0;    
-            y = 200;   
-            z = 200;
-            q = 40;
-        }
+    function reset() {   
+        $myCanvas.show();                   
+        ctx.clearRect(0, 0, 400, 80);                      
+        x = 0;    
+        y = 200;   
+        z = 200;
+        q = 40;
+    }
 
-        function resetTimer() {
-            s = 0;  
-            if(pos){  
-                m = 0;
-                $clock.html(`0${m}:00`);
-            } else {
-                m = resetTime; 
-                $clock.html(`0${m}:00`);
-            } 
-            clearInterval(timerReg); 
-            timerReg = setInterval(timer, 1000); 
-        }
-        // Different timer settings (1,2,3 min)
-        for(let i = 1; i <= 3; i++) {
-            $(`.min${i}`).click(function() {
-                if(changedTmr === false) {
-                    $clock.html(`0${i}:00`);
-                }               
-                m, resetTime = i;                
-                pos = false;    
-                hideTimerBtns(); 
-                changedTmr = false;                      
-                changedTimer(this);  
-                startTime = i; 
-            });
-        }
-        // Infinite timer (limited to 30min :)        
-        function infiniteTimer() {
-            hideTimerBtns();  
-            m, resetTime = 0;
-            pos = true;  
-            startTime = 0; 
-            changedTmr = false;    
-            changedTimer(this);
+    function resetTimer() {
+        s = 0;  
+        if(pos){  
+            m = 0;
+            $clock.html(`0${m}:00`);
+        } else {
+            m = resetTime; 
+            $clock.html(`0${m}:00`);
         } 
-
-        function changedTimer(self) {   
-            changeTimer.push(self.innerHTML)                
-            if(changeTimer.length === 2){
-                if(changeTimer[0] != changeTimer[1]) {
-                    changedTmr = true;
-                } 
-                changeTimer.shift();
-            }                             
-        }
-        
-        function optionsMenu() {   
-            $backBtn.show();
-            $mainMenu.show();
-            $wrapper.hide(); 
-            $myCanvas.css({display: "block"}) && hide(document.querySelector('.one')); 
-            $myCanvasTime.css({display: "block"}) && hideTimerBtns();           
-            $backBtn.on('click', hideMenu); 
-            clearInterval(timerReg);
-        }
-        
-        function backToGame() {  
-            $musicBtn.hasClass('music1') && music();
-            setTimeout(slideUpMenu, 200);                   
-            if(changedTmr === true) {
-                resetTimer();                 
-            } else if($clock.html() != `00:00` || pos) {
-                size === 10 && (timerReg = setInterval(timer, 1000));                     
-            }    
-            changedTmr = false;   
-        }
-        
-        function hideMenu() {
-            if(cardStyle) {
-                let back = document.querySelectorAll('.back');
-                back.forEach(card => card.setAttribute(`src`, `images/${cardStyle}.png`));                
+        clearInterval(timerReg); 
+        timerReg = setInterval(timer, 1000); 
+    }
+    // Different timer settings (1,2,3 min)
+    for(let i = 1; i <= 3; i++) {
+        $(`.min${i}`).click(function() {
+            if(changedTmr === false) {
+                $clock.html(`0${i}:00`);
             }               
-            $mainMenu.hide();
-            $wrapper.show(); 
-        }        
-        
-        function hideTimerBtns() {
-            $timeBtn.css('visibility', 'hidden');
-            $myCanvasTime.hide();
-        }
-        
-        function timer() {
-            pos ? timerPos() : timerNeg(); 
+            m, resetTime = i;                
+            pos = false;    
+            hideTimerBtns(); 
+            changedTmr = false;                      
+            changedTimer(this);  
+            startTime = i; 
+        });
+    }
+    // Infinite timer (limited to 30min :)        
+    function infiniteTimer() {
+        hideTimerBtns();  
+        m, resetTime = 0;
+        pos = true;  
+        startTime = 0; 
+        changedTmr = false;    
+        changedTimer(this);
+    } 
 
-            s > 9 ? sec = s : sec = '0' + s; 
-            m > 9 ? min = m : min = '0' + m; 
-            
-            $clock.html(min + ':' + sec); 
-
-            m === 30 && winLose('You Lose', '#bb2727');            
-        }
-        function timerNeg() {            
-            if(s === 0 && s < 9) {               
-                m--;
-                s = 60;                
-            }
-            s--;  
-
-            $clock.html() === `00:01` && winLose('You Lose', '#bb2727');                        
-        }
-        function timerPos() {            
-            s++; 
-            if(s === 60) {
-                s = 0
-                m++;
+    function changedTimer(self) {   
+        changeTimer.push(self.innerHTML)                
+        if(changeTimer.length === 2){
+            if(changeTimer[0] != changeTimer[1]) {
+                changedTmr = true;
             } 
-        }
-        let menuBtn = true;
-        $window.resize(() => {  
-            slideUpMenu();
-        })
-        function slideUpMenu() {           
-            $(this).width() < 975 ?                
-            $menuBtns.slideUp() :    
-            $menuBtns.slideDown(); 
+            changeTimer.shift();
+        }                             
+    }
+    
+    function optionsMenu() {   
+        $backBtn.show();
+        $mainMenu.show();
+        $wrapper.hide(); 
+        $myCanvas.css({display: "block"}) && hide(document.querySelector('.one')); 
+        $myCanvasTime.css({display: "block"}) && hideTimerBtns();           
+        $backBtn.on('click', hideMenu); 
+        clearInterval(timerReg);
+    }
+    
+    function backToGame() {  
+        $musicBtn.hasClass('music1') && music();
+        setTimeout(slideUpMenu, 200);                   
+        if(changedTmr === true) {
+            resetTimer();                 
+        } else if($clock.html() != `00:00` || pos) {
+            size === 10 && (timerReg = setInterval(timer, 1000));                     
+        }    
+        changedTmr = false;   
+    }
+    
+    function hideMenu() {
+        if(cardStyle) {
+            let back = document.querySelectorAll('.back');
+            back.forEach(card => card.setAttribute(`src`, `images/${cardStyle}.png`));                
+        }               
+        $mainMenu.hide();
+        $wrapper.show(); 
+    }        
+    
+    function hideTimerBtns() {
+        $timeBtn.css('visibility', 'hidden');
+        $myCanvasTime.hide();
+    }
+    
+    function timer() {
+        pos ? timerPos() : timerNeg(); 
 
-            if($menuBtns.is(":visible")) {
-                $slideOptions.css('transform', 'rotate(0deg)');
-                menuBtn = true;
-            } 
+        s > 9 ? sec = s : sec = '0' + s; 
+        m > 9 ? min = m : min = '0' + m; 
+        
+        $clock.html(min + ':' + sec); 
+
+        m === 30 && winLose('You Lose', '#bb2727');            
+    }
+    function timerNeg() {            
+        if(s === 0 && s < 9) {               
+            m--;
+            s = 60;                
+        }
+        s--;  
+
+        $clock.html() === `00:01` && winLose('You Lose', '#bb2727');                        
+    }
+    function timerPos() {            
+        s++; 
+        if(s === 60) {
+            s = 0
+            m++;
+        } 
+    }
+    let menuBtn = true;
+    $window.resize(() => {  
+        slideUpMenu();
+    })
+    function slideUpMenu() {           
+        $(this).width() < 975 ?                
+        $menuBtns.slideUp() :    
+        $menuBtns.slideDown(); 
+
+        if($menuBtns.is(":visible")) {
+            $slideOptions.css('transform', 'rotate(0deg)');
+            menuBtn = true;
+        } 
+    }     
+    
+    function slideOptions(){
+        $menuBtns.slideToggle();  
+        rotateBtn(this);          
+    }
+
+    function rotateBtn(a) {
+        if(menuBtn) {
+            $(a).css('transform', 'rotate(180deg)');
+            menuBtn = false;
+        } else {
+            $(a).css('transform', 'rotate(0deg)')
+            menuBtn = true;
+        }
+    }     
+    let highscores = ['.listHighscores','.listHighscoresM','.listHighscoresH']; 
+    let storageScores = [rank, rankMedium, rankHard]; 
+    let storageNames = ['rank', 'rankMedium', 'rankHard']; 
+    
+    function generateHighscores(par, par2, par3) { 
+        for(let i = 0; i < 10; i++) {
+            par.length < 10 ? par.push('--- | | ---') : null;                  
+            par[i] != '--- | | ---' ? 
+            $(par3).append(`<p>${i+1}.<span class="${par2}${i}">${ par[i].name} - attempts: ${par[i].attempts}, time: ${par[i].playTime}</span></p>`):
+            $(par3).append(`<p>${i+1}.<span class="${par2}${i}">${par[i]}</span></p>`);            
         }     
-        
-        function slideOptions(){
-            $menuBtns.slideToggle();  
-            rotateBtn(this);          
+        localStorage.setItem(par2, JSON.stringify(par));
+    }      
+    if(!localStorage.getItem('rank')) {            
+        generateHighscores(rank, 'rank', '.listHighscores');
+    } else {   
+        rank = JSON.parse(localStorage.getItem('rank'));         
+        generateHighscores(rank, 'rank', '.listHighscores');          
+    }
+    if(!localStorage.getItem('rankMedium')) {            
+        generateHighscores(rankMedium, 'rankMedium', '.listHighscoresM');
+    } else {   
+        rankMedium = JSON.parse(localStorage.getItem('rankMedium'));         
+        generateHighscores(rankMedium, 'rankMedium', '.listHighscoresM');          
+    }
+    if(!localStorage.getItem('rankHard')) {            
+        generateHighscores(rankHard, 'rankHard', '.listHighscoresH');
+    } else {   
+        rankHard = JSON.parse(localStorage.getItem('rankHard'));         
+        generateHighscores(rankHard, 'rankHard', '.listHighscoresH');          
+    }  
+    
+    function uploadScores(diff, storageName) {
+        let playerResult = {
+            name: playerName,
+            attempts: count,
+            playTime: time,
+            aggregate: aggrSec
+        }     
+        function sort() {
+            diff.unshift(playerResult);    
+            diff.sort(function(a, b) {return a.aggregate - b.aggregate}); 
+            diff.sort(function(a, b) {if(a.aggregate === b.aggregate) {return a.attempts - b.attempts}}); 
+            diff.pop();   
         }
-
-        function rotateBtn(a) {
-            if(menuBtn) {
-                $(a).css('transform', 'rotate(180deg)');
-                menuBtn = false;
+                                
+            if(diff.every((el) => el === '--- | | ---')) {    
+                diff.unshift(playerResult);                  
+                diff.pop();                                
+            } else if(diff.some((el) => el === '--- | | ---')){
+                sort();
             } else {
-                $(a).css('transform', 'rotate(0deg)')
-                menuBtn = true;
+                sort(); 
             }
-        }     
-        let highscores = ['.listHighscores','.listHighscoresM','.listHighscoresH']; 
-        let storageScores = [rank, rankMedium, rankHard]; 
-        let storageNames = ['rank', 'rankMedium', 'rankHard']; 
-        
-       function generateHighscores(par, par2, par3) { 
-            for(let i = 0; i < 10; i++) {
-                par.length < 10 ? par.push('--- | | ---') : null;                  
-                par[i] != '--- | | ---' ? 
-                $(par3).append(`<p>${i+1}.<span class="${par2}${i}">${ par[i].name} - attempts: ${par[i].attempts}, time: ${par[i].playTime}</span></p>`):
-                $(par3).append(`<p>${i+1}.<span class="${par2}${i}">${par[i]}</span></p>`);            
-            }     
-            localStorage.setItem(par2, JSON.stringify(par));
-        }      
-        if(!localStorage.getItem('rank')) {            
-            generateHighscores(rank, 'rank', '.listHighscores');
-        } else {   
-            rank = JSON.parse(localStorage.getItem('rank'));         
-            generateHighscores(rank, 'rank', '.listHighscores');          
-        }
-        if(!localStorage.getItem('rankMedium')) {            
-            generateHighscores(rankMedium, 'rankMedium', '.listHighscoresM');
-        } else {   
-            rankMedium = JSON.parse(localStorage.getItem('rankMedium'));         
-            generateHighscores(rankMedium, 'rankMedium', '.listHighscoresM');          
-        }
-        if(!localStorage.getItem('rankHard')) {            
-            generateHighscores(rankHard, 'rankHard', '.listHighscoresH');
-        } else {   
-            rankHard = JSON.parse(localStorage.getItem('rankHard'));         
-            generateHighscores(rankHard, 'rankHard', '.listHighscoresH');          
-        }  
-       
-        function uploadScores(diff, storageName) {
-            let playerResult = {
-                name: playerName,
-                attempts: count,
-                playTime: time,
-                aggregate: aggrSec
-            }     
-            function sort() {
-                diff.unshift(playerResult);    
-                diff.sort(function(a, b) {return a.aggregate - b.aggregate}); 
-                diff.sort(function(a, b) {if(a.aggregate === b.aggregate) {return a.attempts - b.attempts}}); 
-                diff.pop();   
-            }
-                                  
-                if(diff.every((el) => el === '--- | | ---')) {    
-                    diff.unshift(playerResult);                  
-                    diff.pop();                                
-                } else if(diff.some((el) => el === '--- | | ---')){
-                    sort();
-                } else {
-                    sort(); 
-                }
-                localStorage.setItem(storageName, JSON.stringify(diff)); 
+            localStorage.setItem(storageName, JSON.stringify(diff)); 
 
-           
-            for(let i in diff) {                
-                diff[i] != '--- | | ---' ? $(`.${storageName}${i}`).html(`${ diff[i].name} - attempts: ${diff[i].attempts}, time: ${diff[i].playTime}`):
-                diff[i] = '--- | | ---';
-            }                        
-        }                   
         
-        function showHighscores() { 
-            $('.listHighscores').addClass('active');  
-            $scoreLeft.hide(); 
-            $scoreRight.show();             
-        }
-        
-        function exitScores() {           
-            $(this).parent().removeClass('active');
-        }
+        for(let i in diff) {                
+            diff[i] != '--- | | ---' ? $(`.${storageName}${i}`).html(`${ diff[i].name} - attempts: ${diff[i].attempts}, time: ${diff[i].playTime}`):
+            diff[i] = '--- | | ---';
+        }                        
+    }                   
+    
+    function showHighscores() { 
+        $('.listHighscores').addClass('active');  
+        $scoreLeft.hide(); 
+        $scoreRight.show();             
+    }
+    
+    function exitScores() {           
+        $(this).parent().removeClass('active');
+    }
 
-        function init() {
-            $playerSign.fadeIn(1000);             
+    function init() {
+        $playerSign.fadeIn(1000);             
+    }
+    $window.on('load', function() {           
+        for(i=0; i<3; i++) {               
+            storageScores[i].slice(JSON.parse(localStorage.getItem(storageNames[i])));
         }
-        $window.on('load', function() {           
-            for(i=0; i<3; i++) {               
-                storageScores[i].slice(JSON.parse(localStorage.getItem(storageNames[i])));
-            }
-        })  
-        
-        function signIn() {            
-            playerName = $player.val();
-            localStorage.setItem('playerName', playerName);
-            $playerName.html(playerName);
-            $menuButtons.fadeIn();
-            mainAudio.get(0).play();   
-            if(playerName != '') {
-                $playerSign.fadeOut(500);
-                $start.fadeIn(500);
-                return;
-            } 
-            Swal.fire({
-                type: 'warning',
-                title: 'Please enter some value',
-                text: 'Enter your name or nickname!',                
-              })           
-        } 
-        
-        function playerLog() {
+    })  
+    
+    function signIn() {            
+        playerName = $player.val();
+        localStorage.setItem('playerName', playerName);
+        $playerName.html(playerName);
+        $menuButtons.fadeIn();
+        if(playerName != '') {
+            $mainAudio.get(0).play();
+            $playerSign.fadeOut(500);
             $start.fadeIn(500);
-            $menuButtons.fadeIn();
-            playerName = 'Player1';
-            localStorage.setItem('playerName', playerName);
-            $playerName.html(playerName);
-            $playerSign.fadeOut(500); 
-            mainAudio.get(0).play();             
+            return;
         } 
-        
-        $window.resize(function() {
-            if($(this).width() < 576) {
-                $myCanvas.hide();
-                $myCanvasTime.hide(); 
+        Swal.fire({
+            type: 'warning',
+            title: 'Please enter some value',
+            text: 'Enter your name or nickname!',                
+            })           
+    } 
+    
+    function playerLog() {
+        $start.fadeIn(500);
+        $menuButtons.fadeIn();
+        playerName = 'Player1';
+        localStorage.setItem('playerName', playerName);
+        $playerName.html(playerName);
+        $playerSign.fadeOut(500); 
+        $mainAudio.get(0).play();             
+    } 
+    
+    $window.resize(function() {
+        if($(this).width() < 576) {
+            $myCanvas.hide();
+            $myCanvasTime.hide(); 
+        }
+    })         
+    
+    function rightScore() {
+        for(let i in highscores) {    
+            $scoreLeft.show(500);           
+            if($(highscores[i]).hasClass('active')) {
+                i == 1 && $scoreRight.hide(500);
+                $(highscores[i]).removeClass('active');                  
+                $(highscores[(++i)]).addClass('active');
+                break;
+            }               
+        }           
+    }
+    
+    function leftScore() {            
+        for(let i in highscores) {    
+            $scoreRight.show(500);            
+            if($(highscores[i]).hasClass('active')) {
+                i == 1 && $scoreLeft.hide(500);
+                $(highscores[i]).removeClass('active');                  
+                $(highscores[(--i)]).addClass('active');
+                break;
             }
-        })         
-        
-        function rightScore() {
-            for(let i in highscores) {    
-                $scoreLeft.show(500);           
-                if($(highscores[i]).hasClass('active')) {
-                    i == 1 && $scoreRight.hide(500);
-                    $(highscores[i]).removeClass('active');                  
-                    $(highscores[(++i)]).addClass('active');
-                    break;
-                }               
-            }           
-        }
-        
-        function leftScore() {            
-            for(let i in highscores) {    
-                $scoreRight.show(500);            
-                if($(highscores[i]).hasClass('active')) {
-                    i == 1 && $scoreLeft.hide(500);
-                    $(highscores[i]).removeClass('active');                  
-                    $(highscores[(--i)]).addClass('active');
-                    break;
-                }
-            }           
-        }
-
+        }           
+    }
 }); 

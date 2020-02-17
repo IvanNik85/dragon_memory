@@ -1,3 +1,7 @@
+import "./styles/style.css";
+const requireContext = require.context("./images", true, /^\.\/.*\.(png|jpe?g$)/);
+requireContext.keys().map(requireContext);
+
 $(document).ready(function() {
     let cardStyle, dificulty, timerReg;
     let changeTimer = []; 
@@ -94,11 +98,13 @@ $(document).ready(function() {
     }
     loader();   
     //Hide loader when element is loaded    
+    setTimeout(() => {
         $mainMenu.onload = (function() {
             $loader.css("display","none");
             init();
         })()  
-    
+    },3000)
+
     //Music button animations
     
     //Main button function that trigger animation 
@@ -192,13 +198,14 @@ $(document).ready(function() {
                 dificultyLevel(8, cardStyle || 'card1');
                 changeTimer = ['∞'];
                 dificulty = 8;
-        }       
-            $wrapper.onload = (function() {
-                $loader.css("display","none");    
-                resetTimer();             
-            })()    
+        }      
         $wrapper.show();
-        $mainMenu.hide();        
+        $mainMenu.hide(); 
+        $wrapper.onload = (function() {
+            $loader.css("display","none");    
+            resetTimer();             
+        })()    
+                
     }
      
     function randomiseDragons() {

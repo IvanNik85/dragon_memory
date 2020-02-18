@@ -196,7 +196,7 @@ body {
     background-color: rgba(27, 5, 8, 0.7);
     display: block;
     margin: auto;
-    border: 1px splid black;
+    border: 2px solid #ffb03b;
     z-index: 2;
 }
 .difficulty:hover {

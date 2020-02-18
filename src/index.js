@@ -1,6 +1,8 @@
 import "./styles/style.css";
 const requireContext = require.context("./images", true, /^\.\/.*\.(png|jpe?g$)/);
 requireContext.keys().map(requireContext);
+const requireContext1 = require.context("./audio", true, /^\.\/.*\.mp3$/);
+requireContext1.keys().map(requireContext1);
 
 $(document).ready(function() {
     let cardStyle, dificulty, timerReg;
@@ -19,6 +21,7 @@ $(document).ready(function() {
     let count = 0;     
     let s = 0;
     let m = 0;
+    let sec, min;
     let aggrTime, aggrSec, minutes, seconds, textSize;  
         
     // Cache DOM

@@ -1,0 +1,257 @@
+@media(max-width: 1200px) {
+    .min1 {
+        bottom: 123px;
+        left: 127px;
+    }
+    .min2 {
+        bottom: 62px;
+        left: 127px;
+    }
+    .min3 {
+        bottom: 123px;
+        left: 536px;
+    }
+    .infinity {
+        bottom: 62px;
+        left: 536px;
+    }
+    #dragon {
+        left: 23%;
+    }    
+    #diff {
+        top: 8%;
+    }
+    .fa-angle-left, .fa-angle-right {
+        top: 7.6%;
+    }
+    .fa-angle-left:hover, .fa-angle-right:hover {
+        top: 7.5%;
+    }
+    .fa-times-circle {
+        top: 6%;
+    }
+}
+@media (max-width: 991px) {  
+    .clock {
+        padding: 0;
+    }
+    #slideOptions {
+        display: block;  
+        transform: rotate(0deg);      
+        transition: .6s;
+    }
+    #slideOptions:focus {
+        outline: none;
+    }
+    .menu {
+        margin-bottom: 10px;
+    }    
+    .menuBtns {
+        display: none;
+    }
+    .musicControll { 
+        top: -60px;
+        left: 10%;
+        margin: 0;
+    }
+}
+@media (max-width: 767px) { 
+    .min1, .min2 {      
+        left: 37px;
+    }     
+    .min3,.infinity {      
+        left: 446px;
+    }
+    #dragon {
+        left: 15%;
+    }  
+    #diff {
+        top: 6%;
+    }
+    .fa-times-circle {       
+        top: 4%;     
+    }   
+    .listHighscores, .listHighscoresM, .listHighscoresH { 
+        width: 100%;
+        height: 100%;
+        padding-top: 130px;
+        top: 0;
+        left: 0;       
+    }  
+    .listHighscores p, .listHighscoresM p, .listHighscoresH p { 
+        font-size: 1.2em;
+    }
+    .fa-angle-left, .fa-angle-right {
+        position: absolute;
+        top: 5.5%;;
+    }
+    .fa-angle-left:hover, .fa-angle-right:hover {
+        position: absolute;
+        top: 5.5%;
+    }
+    .mainMenu {
+        min-height: 100vh;  
+    }
+    .mainMenu .main {
+        margin-top: 0px;
+        min-height: 100%;
+    }   
+}
+@media (max-width: 576px) {
+    .min1, .min2 {     
+        left: 15%;
+    }
+    .min3, .infinity {      
+        left: 75%;
+    }
+    .btnDiv {
+        margin-top: 20px;
+    }
+    .backBtn, .start {
+        width: 80px;
+    }
+    .fa-times-circle {       
+        top: 4%;   
+        right: 16%;  
+    }   
+}
+@media (max-width: 500px) {
+    .listHighscores, .listHighscoresM, .listHighscoresH {
+        padding-top: 140px;
+    }    
+    .listHighscores p, .listHighscoresM p, .listHighscoresH p { 
+        font-size: 1.1em;       
+    }
+    #diff {
+        top: 7.5%;
+    }
+    .fa-times-circle {       
+        top: 6%;   
+        right: 15%;  
+    }   
+    .fa-angle-left, .fa-angle-right {
+        position: absolute;
+        top: 7%;;
+    }
+    .fa-angle-left:hover, .fa-angle-right:hover {
+        position: absolute;
+        top: 7%;
+    }
+}
+@media (max-width: 470px) {
+    #diff {
+        top: 9%;
+    }
+    .fa-times-circle {       
+        top: 8%;   
+        right: 15%;  
+    }   
+    .fa-angle-left, .fa-angle-right {
+        position: absolute;
+        top: 8.5%;;
+    }
+    .fa-angle-left:hover, .fa-angle-right:hover {
+        position: absolute;
+        top: 8.5%;
+    }
+}
+@media (max-width: 450px) {
+    .min1, .min2 {     
+        left: 15%;
+        background: rgba(0, 0, 0, 0.8)
+    }
+    .min3, .infinity {      
+        left: 70%;
+        background: rgba(0, 0, 0, 0.8)
+    } 
+    .listHighscores, .listHighscoresM, .listHighscoresH {
+        padding-top: 150px;
+    }    
+    .listHighscores p, .listHighscoresM p, .listHighscoresH p { 
+        font-size: 1em;       
+    }
+    #diff {
+        top: 12%;
+    }
+    .fa-times-circle {       
+        top: 11%;   
+        right: 15%;  
+    }   
+    .fa-angle-left, .fa-angle-right {
+        position: absolute;
+        top: 11.5%;;
+    }
+    .fa-angle-left:hover, .fa-angle-right:hover {
+        position: absolute;
+        top: 11.5%;
+    }
+}
+@media (max-width: 420px) {
+    #diff {
+        top: 13.5%;
+    }    
+    .playerSign {
+        width: 95%;
+    }  
+    .fa-times-circle {       
+        top: 12.5%;   
+        right: 15%;  
+    }   
+    .fa-angle-left, .fa-angle-right {
+        position: absolute;
+        top: 13%;;
+    }
+    .fa-angle-left:hover, .fa-angle-right:hover {
+        position: absolute;
+        top: 13%;
+    }
+}
+@media (max-width: 400px) {
+    .listHighscores, .listHighscoresM, .listHighscoresH {
+        width: 200%;
+        left: -50%;
+    }    
+    img.leftD, img.rightD {
+        display: none;
+    }
+    .playerSign {
+        top: 53%;        
+    }
+    #diff {
+        top: 6%;
+    }
+    .fa-times-circle {       
+        top: 4%;   
+        right: 25%;  
+    }   
+    .fa-angle-left, .fa-angle-right {
+        position: absolute;
+        top: 5.5%;       
+    }
+    .fa-angle-left {
+        left: 32%;
+    }
+    .fa-angle-right {
+        right: 32%;
+    }
+    .fa-angle-left:hover, .fa-angle-right:hover {      
+        top: 5.5%;       
+    }
+    .fa-angle-left:hover {
+        left: 32%;
+    }
+    .fa-angle-left:hover {
+        right: 32%;
+    }
+    .modal-dialog .modal-content {
+        padding: 10px 2px;
+    }
+}
+@media (max-width: 357px) { 
+    #dragon {
+        top: 35%;
+    }    
+    .main h1 {       
+        padding-bottom: 30px;
+    }
+}

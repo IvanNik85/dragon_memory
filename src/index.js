@@ -719,9 +719,9 @@ $(document).ready(function() {
     function signIn() {            
         playerName = $player.val();
         localStorage.setItem('playerName', playerName);
-        $playerName.html(playerName);
-        $menuButtons.fadeIn();
+        $playerName.html(playerName);        
         if(playerName != '') {
+            $menuButtons.fadeIn();
             $mainAudio.get(0).play();
             $playerSign.fadeOut(500);
             $start.fadeIn(500);

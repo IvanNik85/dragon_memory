@@ -1,0 +1,157 @@
+/* Menu buttons */
+.menuButtons {
+    position: relative;
+    display: none; 
+}
+.menuButtons .menuBtn:nth-child(1){
+    animation: animateLeft .3s .1s forwards;
+}
+.menuButtons .menuBtn:nth-child(2){
+    animation: animateright .3s .3s forwards;
+}
+.menuButtons .menuBtn:nth-child(3){
+    animation: animateLeft .3s .5s forwards;
+}
+.menuButtons .musicBtn {
+    animation: animateright .3s .7s forwards;
+}
+.menuButtons .menuBtn:nth-child(5) {
+    animation: animateLeft .3s 1s forwards;
+}
+.menuButtons .menuBtn:nth-child(2),.menuButtons .musicBtn {
+    transform: translateX(100px);
+    opacity: 0;
+}
+.menuButtons .menuBtn:nth-child(1),.menuButtons .menuBtn:nth-child(3),
+.menuButtons .menuBtn:nth-child(5) {
+    transform: translateX(-100px);
+    opacity: 0;
+}
+.menuBtn {
+    width: 140px;
+    height: 40px;
+    border-radius: 4px;    
+    background-color:rgba(27, 5, 8, 0.7);
+    color: #fff;    
+    margin: 0 7px; 
+    position: relative;
+    border: 2px solid #ffb03b;
+    transition: 'font-size' 0.075s;    
+}
+.menuBtn:hover {
+    background-color: rgba(62, 0, 45, 0.8);     
+    font-size: 18px;
+    transition: font-size 0.2s;
+}
+.menuBtn:focus {
+    outline: none;
+}
+.timeBtn {
+    position: absolute;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    color: #fff;
+    z-index: 2;
+    border: 2px solid rgb(145, 20, 68);   
+    background-color: rgba(27, 5, 8, 0.7);
+    visibility: hidden;
+}
+.timeBtn:hover {
+    background-color: rgba(253, 222, 45, 0.7);
+    transition: background-color 0.2s;
+    color: #000;
+    font-weight: bold;
+}
+.timeBtn:focus {
+    outline: none;
+}
+.min1 {
+    bottom: 123px;
+    left: 145px;
+}
+.min2 {
+    bottom: 62px;
+    left: 145px;
+}
+.min3 {
+    bottom: 123px;
+    left: 555px;
+}
+.infinity {
+    bottom: 62px;
+    left: 555px;
+}
+.start {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    display: none;
+}
+.backBtn {
+    position: absolute;
+    bottom: 15px;
+    left: 15px; 
+    display: none;
+    z-index: 1;
+}
+#myCanvas {
+    display: block;
+    margin: auto;
+    position: relative;  
+}
+.menuButtons #myCanvasTime {   
+    position: absolute;    
+    left: 0;
+    right: 0; 
+    margin: 0 auto;    
+    bottom: 80px;
+    z-index: 1;    
+}
+.difficulty {        
+    position: relative;
+    width: 140px;
+    height: 40px;
+    background-color: rgba(27, 5, 8, 0.7);
+    display: block;
+    margin: auto;
+    border: 2px solid #ffb03b;
+    z-index: 2;
+}
+.difficulty:hover {
+    background-color:rgba(62, 0, 45, 0.8);     
+}
+.cardBack, .highscores, .timer{
+    position: relative;
+    display: block;
+    margin: 10px auto;
+}
+.timer{
+    position: relative;
+    z-index: 2;
+}
+.btnDiv {
+    display: flex;
+    justify-content: center; 
+    visibility: hidden;
+}
+@keyframes animateright {
+    0% {
+        transform: translateX(100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}
+@keyframes animateLeft {
+    0% {
+        transform: translateX(-100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}

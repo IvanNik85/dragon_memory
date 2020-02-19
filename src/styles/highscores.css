@@ -1,0 +1,74 @@
+/* Highscores */
+.listHighscoresM {
+    z-index: 4;   
+}
+.listHighscoresH {
+    z-index: 3;   
+}
+.fa-angle-left, .fa-angle-right {
+    position: absolute;
+    font-size: 27px;   
+    width: 60px;
+    height: 60px; 
+    line-height: 60px !important;
+    top: 6.5%;
+}
+.fa-angle-left {  
+    left: 27%;    
+}
+.fa-angle-right { 
+    right: 27%;   
+}
+.fa-angle-left:hover, .fa-angle-right:hover {
+    font-size: 33px;
+    transition: .1s;    
+    top: 6.4%;
+    cursor: pointer;
+}
+#diff {
+    position: absolute;
+    top: 7%;
+    transform: translateX(-50%);
+    left: 50%;
+    font-size: 35px;
+    font-family: scorelist;
+    padding: 0;
+}
+.fa-times-circle {
+    position: absolute;
+    top: 5%;
+    right: 15%;
+    font-size: 30px; 
+    transition: .1s;
+}
+.fa-times-circle:hover {
+   color: #8e0c0c;
+   cursor: pointer;
+   font-weight: bold;
+}
+.listHighscores, .listHighscoresM, .listHighscoresH {    
+    transform: scale(0);
+    position: absolute;   
+    width: 85%;
+    height: 125%;
+    top: -70px;
+    left: 55px;    
+    background: url(../images/scroll.png) no-repeat center;
+    background-size: contain;    
+    text-align: center;
+    font-weight: bold;
+    padding-top: 165px;
+    transition: all 0.9s;
+    z-index: 5;   
+}
+.active  {
+    transform: scale(1);    
+}
+.listHighscores p,.listHighscoresM p, .listHighscoresH p {
+    font-family: scorelist;
+    font-size: 1.5em;
+    margin: 5px;
+}
+.listHighscores span, .listHighscoresM span, .listHighscoresH span {
+    padding-left: 15px;
+}

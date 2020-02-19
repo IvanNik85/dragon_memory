@@ -1,0 +1,69 @@
+/* Game */
+.wrapImg {
+    background-color: rgba(0, 0, 0, 0.6);
+    min-height: 100vh;
+    padding-top: 15px;
+}
+#game {
+    padding-left: 4px;
+    padding-right: 0;
+}
+.memoryGame {
+    width: 100%; 
+    display: flex;
+    flex-flow: row wrap;
+    perspective: 1000px;
+    position: relative;
+}
+#overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+.memoryGame #winLose {
+    position: absolute;
+    color: #fff;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    z-index: 10;
+    width: 100%;
+    text-align: center;
+    font-size: 0px;   
+    text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+    font-family: winLose;
+}
+.memoryGame .card {
+    max-width: calc(25% - 0.375em);
+    max-height: calc(25% - 0.375em);;
+    position: relative;
+    margin: 3px;   
+    transform-style: preserve-3d;
+    transition: .5s;   
+    background-color: transparent; 
+    border: none;
+}
+.card1 {
+    width: calc(20% - 0.375em);
+    background: url('../images/lastCard1.png') no-repeat center;
+    background-size: cover;
+    margin: 3px; 
+}
+.card1 img {
+    width: 100%;
+    height: 100%;
+}
+.card.flip {
+    transform: rotateY(180deg);    
+    transition: .5s;
+}
+.front, .back {
+    width: 100%;  
+    backface-visibility: hidden; 
+    border-radius: 5px;     
+}
+.front {
+    transform: rotateY(180deg);
+    position: absolute;   
+}

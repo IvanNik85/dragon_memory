@@ -1,0 +1,67 @@
+/* inGame Menu */
+.menu {
+    border: 2px solid #fad232;    
+}
+.menu h1, .main h1 {
+    font-family: memoryFont;
+    font-size: 65px;    
+    color:#fad232;
+    text-align: center;
+    margin: 20px 0;
+    text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+}
+.main h1 {
+    margin: 0;
+    padding-bottom: 50px;
+}
+#newGame, #options {
+    width: 140px;
+    height: 35px;
+    transform: scale(1);
+    display: block;
+    margin: 20px auto;
+    background-color: rgb(145, 20, 68);
+    outline: none;
+    border:2px solid black;
+    color: #fff;
+    border-radius: 3px;
+    transition: 0.2s;   
+}
+#options {
+    transition: 0.35s;   
+}
+#options:hover i {
+    font-weight: bold;
+    transition: all 0.35s;    
+}
+#newGame:active, #options:active {
+    transform: scale(.97);
+    transition: .1s;
+}
+#attempts {
+    text-align: center;
+    color: #fff;
+    font-size: 20px;
+}
+#num {
+    padding-left: 5px;
+}
+.clock {
+    color: #fff;
+    text-align: center;
+    padding-top: 50px;
+    font-size: 60px;
+    font-family: digitalClock;
+}
+#slideOptions {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    color: #fff;
+    background-color:rgb(145, 20, 68);
+    border: 1px solid black;
+    width: 35px;
+    height: 35px;
+    border-radius: 5px;
+    display: none;
+}

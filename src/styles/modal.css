@@ -1,0 +1,33 @@
+/* Modal style */
+#myModal {
+    padding: 15px 17px 0;
+}
+.modal .modal-dialog {
+    max-width: 600px;
+    margin: 7.3rem auto;
+}
+.modal-dialog .modal-content {
+    width: 100%;   
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-content: center;
+    flex-flow: row wrap;
+    padding: 20px 10px;   
+}
+.modal-content img {
+    width: 25%;
+    height: 25%;
+    padding: 3px;
+    border-radius: 6px;
+}
+.modal-content .close {
+    font-size: 1.2em;
+    line-height: 40px;
+    position: relative;
+    top: 5px;
+}
+.modal-content .close:hover span {
+    color: red;
+    font-weight: bold;
+}

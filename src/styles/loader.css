@@ -1,0 +1,44 @@
+/* Loader */
+.loaderDiv {
+    height: 100vh;
+    width: 100vw;    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;     
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+.we {
+    position: relative;
+    width: 10px;
+    height: 55px;
+    background-color: #f06543;
+    background-image: linear-gradient(45deg, #a70e0e 0%, #fad232 74%);
+    margin: 3px; 
+    border-radius: 1px;
+    animation: loaderStart .0s ease-in infinite; 
+}
+.loader {
+    width: 200px;
+    height: 50px;
+    display: flex;
+    justify-content: center;                   
+}          
+@keyframes loaderStart {
+    0% {
+        top: 0;
+        bottom: 0;
+    }
+    50% {      
+        top: 25px;
+        bottom: 25px;   
+        height: 0px;
+    }
+    100% {
+        top: 0;
+        bottom: 0;
+    }
+}

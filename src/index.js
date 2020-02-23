@@ -1,8 +1,8 @@
 import "./styles/style.css";
+import {$mainAudio, $musicBtn} from "./js/music";
+import {$window, hideTimerBtns, $myCanvasTime, $myCanvas} from "./js/canvas";
 const requireContext = require.context("./images", true, /^\.\/.*\.(png|jpe?g$)/);
 requireContext.keys().map(requireContext);
-const requireContext1 = require.context("./audio", true, /^\.\/.*\.mp3$/);
-requireContext1.keys().map(requireContext1);
 
 $(document).ready(function() {
     let cardStyle, dificulty, timerReg;
@@ -25,36 +25,19 @@ $(document).ready(function() {
     let aggrTime, aggrSec, minutes, seconds, textSize;  
         
     // Cache DOM
-    const $window = $(window);
+    // const $window = $(window);
     const $body = $('body');
     const $mainMenu = $('.mainMenu');
     const $wrapper = $('.wrapper');
-    const $inGameAudio = $body.find(".inGameAudio");
-    const $inGameAudioTwo = $body.find(".inGameAudioTwo");   
-    const $mainAudio = $body.find(".mainAudio");  
-    const $musicBtn = $mainMenu.find('.musicBtn');
-    const $musicText = $musicBtn.find('span');
-    const $musicDiv = $musicBtn.find('div');
-    const $musicOne = $musicBtn.find('.musicOne');
-    const $musicTwo = $musicBtn.find('.musicTwo');
-    const $musicThree = $musicBtn.find('.musicThree');
-    const $musicFour = $musicBtn.find('#musicFour');
-    const musicData = [$mainAudio, $inGameAudio, $inGameAudioTwo];
-    const $musicControll = $wrapper.find('.musicControll');
     const $loader = $body.find('.loaderDiv');
-    const $slideLine = $('.slideLine');
-    const $myCanvasTime = $mainMenu.find('#myCanvasTime');
-    const $myCanvas = $mainMenu.find('#myCanvas');
+    // const $myCanvasTime = $mainMenu.find('#myCanvasTime');
+    // const $myCanvas = $mainMenu.find('#myCanvas');
     const $modalContent = $mainMenu.find('.modal-content');
     const $start = $body.find('.start');
     const $num = $wrapper.find('#num');
     const $memoryGame = $wrapper.find('.memoryGame');
-    const $clock = $wrapper.find('.clock');
-    const $btnDiv = $mainMenu.find('.btnDiv');
-    const $newGame = $wrapper.find('#newGame');
-    const $difficulty = $mainMenu.find('.difficulty');
-    const $timer = $mainMenu.find('.timer');
-    const $timeBtn = $mainMenu.find('.timeBtn');
+    const $clock = $wrapper.find('.clock');    
+    const $newGame = $wrapper.find('#newGame');  
     const $options = $wrapper.find('#options');
     const $infinity = $mainMenu.find('.infinity');
     const $backBtn = $mainMenu.find('.backBtn');
@@ -70,17 +53,10 @@ $(document).ready(function() {
     const $playerOne = $mainMenu.find('#playerOne');
     const $scoreRight = $mainMenu.find('.fa-angle-right');
     const $scoreLeft = $('.fa-angle-left');
-
-    // Bind events
-    $musicBtn.click(music);
-    $musicOne.click(audio($mainAudio));
-    $musicTwo.click(audio($inGameAudio)); 
-    $musicThree.click(audio($inGameAudioTwo));
-    $musicFour.click(musicStop);   
-    $musicControll.click(musicStop);
+    
+    // Bind events    
     $start.click(start); 
-    $newGame.click(newGame);
-    $timer.click(timerAnimate);
+    $newGame.click(newGame);    
     $infinity.click(infiniteTimer);
     $options.click(optionsMenu);
     $backBtn.click(backToGame);
@@ -106,41 +82,7 @@ $(document).ready(function() {
             $loader.css("display","none");
             init();
         })()  
-    },3000)
-
-    //Music button animations
-    
-    //Main button function that trigger animation 
-    function music() {
-        $musicBtn.toggleClass('music1');       
-        $musicDiv.toggleClass('animDiv');       
-        $musicText.fadeToggle(150);      
-    }    
-    // Play song/stop another
-    function audio(song) {
-        return function() {
-            audioFour();
-            song.get(0).play();   
-            musicLine(true);
-        }              
-    }     
-    // Pause current song and reset play time
-    function audioFour() {   
-        musicData.forEach(song => {    
-            song.get(0).pause();
-            song.get(0).currentTime = 0;        
-        });
-    }
-    // Stopping music function   
-    function musicStop() {
-        musicLine(false);
-        audioFour();
-    }
-    // Determining whether music button line is crossed or not and deciding when to cross out
-    function musicLine(condition) {
-        $slideLine.hasClass('changeLine') === condition && 
-        $slideLine.toggleClass('changeLine');
-    }
+    },2000)
     
     for(let i = 0; i < 12; i++) {
         $modalContent.prepend(
@@ -226,8 +168,8 @@ $(document).ready(function() {
     function dificultyLevel(num, back) {  
         $memoryGame.empty();
         $memoryGame.append('<div id="overlay"><h1 id="winLose"></h1></div>')
-        for(i = 0; i < 2; i++) {
-            for(j = 1; j <= num; j++) {                             
+        for(let i = 0; i < 2; i++) {
+            for(var j = 1; j <= num; j++) {                             
                 $memoryGame.append(`<div class="card" data-name="dragon${randomDragon[j]}">
                 <img class="front" src="images/${randomDragon[j]}.jpg" alt="dragon${randomDragon[j]}">
                 <img class="back" src="images/${back}.png" alt="cardBack"> 
@@ -350,154 +292,6 @@ $(document).ready(function() {
         start(); 
     }    
 
-    let c = document.getElementById("myCanvas");
-    let ctx = c.getContext("2d");    
-    ctx.strokeStyle = '#fad232';
-    ctx.lineWidth = 2.5;
-    let called = false;
-    $difficulty.click(function(){   
-        $myCanvas.show();     
-        $btnDiv.css('visibility', 'hidden');   
-        if($window.width() < 576) {
-            $myCanvas.hide();
-            $myCanvasTime.hide();
-            $btnDiv.fadeIn(270);
-            setTimeout(function() {
-                $btnDiv.css('visibility', 'visible'); 
-            },230);   
-        } else {       
-            if(called) {            
-                reset(); 
-                setTimeout(function() {
-                    $btnDiv.css('visibility', 'visible'); 
-                },900)                                 
-            } else {
-                animate();
-                $btnDiv.css('visibility', 'visible'); 
-                called = true;             
-            } 
-        }       
-    })     
-
-    $btnDiv.css('display', 'none');
-    let x = 0;    
-    let y = 200;   
-    let z = 200;
-    let q = 40; 
-    function animate() {
-        window.requestAnimationFrame(animate); 
-        if(x <= 40) { 
-            ctx.beginPath();               
-            ctx.moveTo(200,0);
-            ctx.lineTo(200,x);   
-            x += 5;  
-        } else if(y < 350 && z > 50) {
-            y += 5;  
-            z -= 5;  
-            ctx.moveTo(200,40);
-            ctx.lineTo(y,40);               
-            ctx.lineTo(z,40); 
-        } else if(q <= 80){                                                
-            ctx.moveTo(50,40);
-            ctx.lineTo(50,q);
-            ctx.moveTo(200,40);
-            ctx.lineTo(200,q);
-            ctx.moveTo(350,40);
-            ctx.lineTo(350,q);   
-            q += 5;                
-        } else {                
-            $btnDiv.fadeIn();
-        }    
-        ctx.stroke();             
-    }    
-    
-    let called1 = false;    
-
-    function timerAnimate(){            
-        $timeBtn.css('visibility', 'hidden');  
-        if($window.width() < 576) {
-            $myCanvas.hide();
-            $myCanvasTime.hide();
-            $timeBtn.fadeIn(270);
-            setTimeout(function() {
-                $timeBtn.css('visibility', 'visible'); 
-            },230);   
-        } else {                     
-            if(called1) {                                     
-                resetTimeCanvas();                              
-                setTimeout(function() {
-                    $timeBtn.css('visibility', 'visible'); 
-                },600)                                 
-            } else {  
-                resetTimeCanvas();               
-                animateTime();                
-                $timeBtn.css('visibility', 'visible'); 
-                called1 = true;             
-            }        
-        }
-    }
-
-    function resetTimeCanvas() {
-        $myCanvasTime.show();                   
-        cont.clearRect(0, 0, 400, 80);                      
-        g = 130; 
-        h = 270;  
-        j = 2*Math.PI; 
-        k = 0*Math.PI;   
-        l = 1*Math.PI;
-        i = 1*Math.PI;   
-    }
-
-    $timeBtn.css('display', 'none');
-    let t = document.getElementById("myCanvasTime");
-    let cont = t.getContext("2d");    
-    cont.strokeStyle = '#fad232';
-    cont.lineWidth = 2.5;        
-    let g = 130; 
-    let h = 270;  
-    let j = 2*Math.PI; 
-    let k = 0*Math.PI;   
-    let l = 1*Math.PI;
-    let i = 1*Math.PI;
-    function animateTime() {
-        window.requestAnimationFrame(animateTime); 
-        if(g >= 60 || h <= 340) { 
-                cont.beginPath();               
-                cont.moveTo(130, 40);
-                cont.lineTo(g, 40);
-                cont.moveTo(270, 40);
-                cont.lineTo(h, 40);   
-                g -= 5; 
-                h += 5;
-        } else if(j>=1.5*Math.PI || k <= 0.5*Math.PI ||
-                l<=1.5*Math.PI || i>=0.5*Math.PI) { 
-                cont.moveTo(60,40);                 
-                cont.arc(20,40,30,2*Math.PI, j, true);
-                cont.moveTo(60,40);
-                cont.arc(20,40,30,0*Math.PI, k);
-                cont.moveTo(340,40);                 
-                cont.arc(380,40,30,1*Math.PI, l);
-                cont.moveTo(340,40);
-                cont.arc(380,40,30,1*Math.PI, i, true); 
-                k += 0.075;  
-                j -= 0.075;      
-                l += 0.075;      
-                i -= 0.075;          
-        } else {
-            $timeBtn.show(); 
-        }
-        cont.stroke();             
-        }   
-
-    function reset() {   
-        $myCanvas.show();                   
-        ctx.clearRect(0, 0, 400, 80);                      
-        x = 0;    
-        y = 200;   
-        z = 200;
-        q = 40;
-    }
-
     function resetTimer() {
         s = 0;  
         if(pos){  
@@ -572,12 +366,7 @@ $(document).ready(function() {
         }               
         $mainMenu.hide();
         $wrapper.show(); 
-    }        
-    
-    function hideTimerBtns() {
-        $timeBtn.css('visibility', 'hidden');
-        $myCanvasTime.hide();
-    }
+    }   
     
     function timer() {
         pos ? timerPos() : timerNeg(); 
@@ -711,7 +500,7 @@ $(document).ready(function() {
         $playerSign.fadeIn(1000);             
     }
     $window.on('load', function() {           
-        for(i=0; i<3; i++) {               
+        for(let i=0; i<3; i++) {               
             storageScores[i].slice(JSON.parse(localStorage.getItem(storageNames[i])));
         }
     })  

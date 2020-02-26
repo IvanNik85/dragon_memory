@@ -1,10 +1,13 @@
+import {$body} from "./signLogIn";
+
+// Cashe DOM
 export const $window = $(window);
-export const $myCanvasTime = $('#myCanvasTime');
-export const $myCanvas = $('#myCanvas');
-const $btnDiv = $('.btnDiv');
-const $difficulty = $('.difficulty');
-const $timer = $('.timer');
-const $timeBtn = $('.timeBtn');
+export const $myCanvasTime = $body.find('#myCanvasTime');
+export const $myCanvas = $body.find('#myCanvas');
+const $btnDiv = $body.find('.btnDiv');
+const $difficulty = $body.find('.difficulty');
+const $timer = $body.find('.timer');
+const $timeBtn = $body.find('.timeBtn');
 
 // Level button canvas --------------------------------------------------
 let c = document.getElementById("myCanvas");
@@ -166,6 +169,14 @@ function animateTime() {
 //Trigering animations
 $timer.click(timerAnimate);
 $difficulty.click(levelCanvas);
+
+//Remove canvas on small devices
+$window.resize(function() {
+    if($(this).width() < 576) {
+        $myCanvas.hide();
+        $myCanvasTime.hide(); 
+    }
+})  
 
 export function hideTimerBtns() {
     $timeBtn.css('visibility', 'hidden');

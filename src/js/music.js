@@ -1,10 +1,13 @@
 const requireContext1 = require.context("../audio", true, /^\.\/.*\.mp3$/);
 requireContext1.keys().map(requireContext1);
 
+// Cache DOM
 export const $musicBtn = $('.musicBtn');
 export const $mainAudio = $(".mainAudio");
 const $inGameAudio = $(".inGameAudio");
 const $inGameAudioTwo = $(".inGameAudioTwo");
+const $musicControll = $('.musicControll');
+const $slideLine = $('.slideLine');
 const $musicText = $musicBtn.find('span');
 const $musicDiv = $musicBtn.find('div');
 const $musicOne = $musicBtn.find('.musicOne');
@@ -12,13 +15,11 @@ const $musicTwo = $musicBtn.find('.musicTwo');
 const $musicThree = $musicBtn.find('.musicThree');
 const $musicFour = $musicBtn.find('#musicFour');
 const musicData = [$mainAudio, $inGameAudio, $inGameAudioTwo];
-const $musicControll = $('.musicControll');
-const $slideLine = $('.slideLine');
 
 //Music button animations
 
 //Main button function that trigger animation 
-function music() {
+export function music() {
     $musicBtn.toggleClass('music1');
     $musicDiv.toggleClass('animDiv');
     $musicText.fadeToggle(150);

@@ -1,6 +1,7 @@
 import "./styles/style.css";
-import {$mainAudio, $musicBtn} from "./js/music";
+import {$musicBtn} from "./js/music";
 import {$window, hideTimerBtns, $myCanvasTime, $myCanvas} from "./js/canvas";
+import {$start, $loader, playerName} from "./js/signLogIn";
 const requireContext = require.context("./images", true, /^\.\/.*\.(png|jpe?g$)/);
 requireContext.keys().map(requireContext);
 
@@ -10,10 +11,8 @@ $(document).ready(function() {
     let changedTmr = false;   
     let dragons = [];
     let randomDragon = []; 
-    let playerName, time;
-    let rank = [];
-    let rankMedium = [];
-    let rankHard = [];
+    let time;
+    let rank, rankMedium, rankHard;
     let size = 10; 
     let pos = true; 
     let resetTime = 0;
@@ -24,16 +23,10 @@ $(document).ready(function() {
     let sec, min;
     let aggrTime, aggrSec, minutes, seconds, textSize;  
         
-    // Cache DOM
-    // const $window = $(window);
-    const $body = $('body');
+    // Cache DOM       
     const $mainMenu = $('.mainMenu');
-    const $wrapper = $('.wrapper');
-    const $loader = $body.find('.loaderDiv');
-    // const $myCanvasTime = $mainMenu.find('#myCanvasTime');
-    // const $myCanvas = $mainMenu.find('#myCanvas');
-    const $modalContent = $mainMenu.find('.modal-content');
-    const $start = $body.find('.start');
+    const $wrapper = $('.wrapper');       
+    const $modalContent = $mainMenu.find('.modal-content');    
     const $num = $wrapper.find('#num');
     const $memoryGame = $wrapper.find('.memoryGame');
     const $clock = $wrapper.find('.clock');    
@@ -44,15 +37,9 @@ $(document).ready(function() {
     const $menuBtns = $wrapper.find('.menuBtns');
     const $slideOptions = $wrapper.find('#slideOptions');
     const $highscores = $mainMenu.find('.highscores');
-    const $exitScores = $mainMenu.find('.fa-times-circle');
-    const $playerSign = $mainMenu.find('.playerSign');
-    const $sign = $mainMenu.find('#sign');
-    const $player = $mainMenu.find('#player');
-    const $playerName = $wrapper.find('.playerName');
-    const $menuButtons = $mainMenu.find('.menuButtons');
-    const $playerOne = $mainMenu.find('#playerOne');
+    const $exitScores = $mainMenu.find('.fa-times-circle');    
     const $scoreRight = $mainMenu.find('.fa-angle-right');
-    const $scoreLeft = $('.fa-angle-left');
+    const $scoreLeft = $mainMenu.find('.fa-angle-left');
     
     // Bind events    
     $start.click(start); 
@@ -62,28 +49,11 @@ $(document).ready(function() {
     $backBtn.click(backToGame);
     $slideOptions.click(slideOptions);
     $highscores.click(showHighscores);
-    $exitScores.click(exitScores);
-    $sign.click(signIn);
-    $playerOne.click(playerLog);
+    $exitScores.click(exitScores);    
     $scoreRight.click(rightScore);
     $scoreLeft.click(leftScore);
 
-    //Loading animation
-    function loader() {
-        for(let i = 1; i <= 10; i++) {
-           $(`.loader .we:nth-child(${i})`)
-            .css(`animation`, `loaderStart 1.2s ${i * .1}s infinite`);
-        }   
-    }
-    loader();   
-    //Hide loader when element is loaded    
-    setTimeout(() => {
-        $mainMenu.onload = (function() {
-            $loader.css("display","none");
-            init();
-        })()  
-    },2000)
-    
+    // Modal with cards backround selection
     for(let i = 0; i < 12; i++) {
         $modalContent.prepend(
         `<img 
@@ -93,13 +63,13 @@ $(document).ready(function() {
             data-dismiss="modal"
         >`);       
     } 
-
+    // Choosing the card backround
     let cardsB = document.querySelectorAll('.modal-content img');
     cardsB.forEach(card => card.addEventListener('click', changeBack));
     function changeBack() {
        cardStyle = this.id;              
     }
-  
+    // Selecting game difficulty
     let selectDif = ['.one','.two','.three'];
     let dif = [8, 12, 18];
     for(let i = 0; i < 3; i++) {
@@ -108,7 +78,7 @@ $(document).ready(function() {
             hide(this); 
         });
     }
-    
+    // Hiding function
     function hide(par) {
         $myCanvas.hide();
         par.parentElement.style.visibility = 'hidden'; 
@@ -152,7 +122,7 @@ $(document).ready(function() {
         })()    
                 
     }
-     
+    // Randomise dragon cards that will be displayed
     function randomiseDragons() {
         randomDragon = [];
         for(let i=1; i<=50; i++) {
@@ -165,6 +135,7 @@ $(document).ready(function() {
         }        
     }    
 
+    // Generate field according to difficulty level and card background 
     function dificultyLevel(num, back) {  
         $memoryGame.empty();
         $memoryGame.append('<div id="overlay"><h1 id="winLose"></h1></div>')
@@ -176,7 +147,7 @@ $(document).ready(function() {
                 </div>`);
             }            
         }  
-
+        // Shuffling cards at the beginning of the game
         (function shufle() {
             $memoryGame.find('.card').each(function() {
                 $(this).css({
@@ -198,7 +169,8 @@ $(document).ready(function() {
         let countPair = 0; 
         count = 0;   
         let cardsNumber = document.querySelectorAll('.card').length;
-        
+
+        // Flipping cards function
         function flip() {              
             if(lockBoard) return;
             if(this === firstCard) return;
@@ -237,12 +209,11 @@ $(document).ready(function() {
                     case 18:
                     uploadScores(rankHard, 'rankHard');   
                     break;
-                }
-                // uploadScores();
+                }                
             } 
         }  
     }  
-
+    // End game animation and uploading results
     function winLose(message, colorWL) {               
         let interval = setInterval(animateWinLose, 10);
         $memoryGame.find('#overlay').css({
@@ -287,11 +258,11 @@ $(document).ready(function() {
             aggrSec = m*60 + s;
         }   
     }         
-    
+    // Start new game
     function newGame() { 
         start(); 
     }    
-
+    // Reset timer function
     function resetTimer() {
         s = 0;  
         if(pos){  
@@ -327,7 +298,7 @@ $(document).ready(function() {
         changedTmr = false;    
         changedTimer(this);
     } 
-
+    // Changing timer value
     function changedTimer(self) {   
         changeTimer.push(self.innerHTML)                
         if(changeTimer.length === 2){
@@ -337,7 +308,7 @@ $(document).ready(function() {
             changeTimer.shift();
         }                             
     }
-    
+    // Options menu function
     function optionsMenu() {   
         $backBtn.show();
         $mainMenu.show();
@@ -347,7 +318,7 @@ $(document).ready(function() {
         $backBtn.on('click', hideMenu); 
         clearInterval(timerReg);
     }
-    
+    // Returning to game from main menu
     function backToGame() {  
         $musicBtn.hasClass('music1') && music();
         setTimeout(slideUpMenu, 200);                   
@@ -358,7 +329,7 @@ $(document).ready(function() {
         }    
         changedTmr = false;   
     }
-    
+    // Hide menu and change card style if selected
     function hideMenu() {
         if(cardStyle) {
             let back = document.querySelectorAll('.back');
@@ -367,7 +338,8 @@ $(document).ready(function() {
         $mainMenu.hide();
         $wrapper.show(); 
     }   
-    
+
+    // Timer functions
     function timer() {
         pos ? timerPos() : timerNeg(); 
 
@@ -394,6 +366,7 @@ $(document).ready(function() {
             m++;
         } 
     }
+    // Slide up menu
     let menuBtn = true;
     $window.resize(() => {  
         slideUpMenu();
@@ -408,12 +381,12 @@ $(document).ready(function() {
             menuBtn = true;
         } 
     }     
-    
+    // Slide menu buttons on smaller screens
     function slideOptions(){
         $menuBtns.slideToggle();  
         rotateBtn(this);          
     }
-
+    // Rotate button for smaler devices menu
     function rotateBtn(a) {
         if(menuBtn) {
             $(a).css('transform', 'rotate(180deg)');
@@ -425,8 +398,14 @@ $(document).ready(function() {
     }     
     let highscores = ['.listHighscores','.listHighscoresM','.listHighscoresH']; 
     let storageScores = [rank, rankMedium, rankHard]; 
-    let storageNames = ['rank', 'rankMedium', 'rankHard']; 
-    
+    let storageNames = ['rank', 'rankMedium', 'rankHard'];
+
+    $window.on('load', function() {           
+        for(let i=0; i<3; i++) {               
+            storageScores[i].slice(JSON.parse(localStorage.getItem(storageNames[i])));
+        }
+    })  
+    //Generate highscores
     function generateHighscores(par, par2, par3) { 
         for(let i = 0; i < 10; i++) {
             par.length < 10 ? par.push('--- | | ---') : null;                  
@@ -436,25 +415,21 @@ $(document).ready(function() {
         }     
         localStorage.setItem(par2, JSON.stringify(par));
     }      
-    if(!localStorage.getItem('rank')) {            
-        generateHighscores(rank, 'rank', '.listHighscores');
-    } else {   
-        rank = JSON.parse(localStorage.getItem('rank'));         
-        generateHighscores(rank, 'rank', '.listHighscores');          
-    }
-    if(!localStorage.getItem('rankMedium')) {            
-        generateHighscores(rankMedium, 'rankMedium', '.listHighscoresM');
-    } else {   
-        rankMedium = JSON.parse(localStorage.getItem('rankMedium'));         
-        generateHighscores(rankMedium, 'rankMedium', '.listHighscoresM');          
-    }
-    if(!localStorage.getItem('rankHard')) {            
-        generateHighscores(rankHard, 'rankHard', '.listHighscoresH');
-    } else {   
-        rankHard = JSON.parse(localStorage.getItem('rankHard'));         
-        generateHighscores(rankHard, 'rankHard', '.listHighscoresH');          
-    }  
+
+    // Uploading and displaying highscores    
+    (function storageData() {
+        storageNames.map((stname, i) => {
+            if (!localStorage.getItem(stname)) {
+                generateHighscores(storageScores[i], stname, highscores[i])
+            } else {
+                storageScores[i] = JSON.parse(localStorage.getItem(stname));
+                generateHighscores(storageScores[i], stname, highscores[i]);            
+            }
+        })               
+    })();
+    [rank, rankMedium, rankHard] = storageScores;
     
+    // Uploading and sorting scores by result and difficulty level
     function uploadScores(diff, storageName) {
         let playerResult = {
             name: playerName,
@@ -467,79 +442,43 @@ $(document).ready(function() {
             diff.sort(function(a, b) {return a.aggregate - b.aggregate}); 
             diff.sort(function(a, b) {if(a.aggregate === b.aggregate) {return a.attempts - b.attempts}}); 
             diff.pop();   
+        }                                        
+        if(diff.every((el) => el === '--- | | ---')) {    
+            diff.unshift(playerResult);                  
+            diff.pop();                                
+        } else if(diff.some((el) => el === '--- | | ---')){
+            sort();
+        } else {
+            sort(); 
         }
-                                
-            if(diff.every((el) => el === '--- | | ---')) {    
-                diff.unshift(playerResult);                  
-                diff.pop();                                
-            } else if(diff.some((el) => el === '--- | | ---')){
-                sort();
-            } else {
-                sort(); 
-            }
-            localStorage.setItem(storageName, JSON.stringify(diff)); 
-
+        localStorage.setItem(storageName, JSON.stringify(diff)); 
         
         for(let i in diff) {                
             diff[i] != '--- | | ---' ? $(`.${storageName}${i}`).html(`${ diff[i].name} - attempts: ${diff[i].attempts}, time: ${diff[i].playTime}`):
             diff[i] = '--- | | ---';
         }                        
-    }                   
-    
+    }        
+
+    // Showing highscores
     function showHighscores() { 
         $('.listHighscores').addClass('active');  
         $scoreLeft.hide(); 
         $scoreRight.show();             
-    }
-    
+    }    
+
+    // Exiting highscores
     function exitScores() {           
         $(this).parent().removeClass('active');
     }
-
-    function init() {
-        $playerSign.fadeIn(1000);             
-    }
-    $window.on('load', function() {           
-        for(let i=0; i<3; i++) {               
-            storageScores[i].slice(JSON.parse(localStorage.getItem(storageNames[i])));
-        }
-    })  
-    
-    function signIn() {            
-        playerName = $player.val();
-        localStorage.setItem('playerName', playerName);
-        $playerName.html(playerName);        
-        if(playerName != '') {
-            $menuButtons.fadeIn();
-            $mainAudio.get(0).play();
-            $playerSign.fadeOut(500);
-            $start.fadeIn(500);
-            return;
-        } 
-        Swal.fire({
-            type: 'warning',
-            title: 'Please enter some value',
-            text: 'Enter your name or nickname!',                
-            })           
-    } 
-    
-    function playerLog() {
-        $start.fadeIn(500);
-        $menuButtons.fadeIn();
-        playerName = 'Player1';
-        localStorage.setItem('playerName', playerName);
-        $playerName.html(playerName);
-        $playerSign.fadeOut(500); 
-        $mainAudio.get(0).play();             
-    } 
-    
+ 
+    // Remove canvas on smaler devices
     $window.resize(function() {
         if($(this).width() < 576) {
             $myCanvas.hide();
             $myCanvasTime.hide(); 
         }
     })         
-    
+    // Move to right scorelist by difficulty
     function rightScore() {
         for(let i in highscores) {    
             $scoreLeft.show(500);           
@@ -551,7 +490,7 @@ $(document).ready(function() {
             }               
         }           
     }
-    
+     // Move to left scorelist by difficulty
     function leftScore() {            
         for(let i in highscores) {    
             $scoreRight.show(500);            

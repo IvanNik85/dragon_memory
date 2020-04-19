@@ -12,7 +12,9 @@ export function main() {
     let dragons = [];
     let randomDragon = []; 
     let time;
-    let rank, rankMedium, rankHard;
+    let rank = []; 
+    let rankMedium = []; 
+    let rankHard = [];
     let size = 10; 
     let pos = true; 
     let resetTime = 0;
@@ -398,7 +400,7 @@ export function main() {
     }     
     let highscores = ['.listHighscores','.listHighscoresM','.listHighscoresH']; 
     let storageScores = [rank, rankMedium, rankHard]; 
-    let storageNames = ['rank', 'rankMedium', 'rankHard'];
+    let storageNames = ['rank', 'rankMedium', 'rankHard'];    
 
     $window.on('load', function() {           
         for(let i=0; i<3; i++) {               
@@ -406,9 +408,9 @@ export function main() {
         }
     })  
     //Generate highscores
-    function generateHighscores(par, par2, par3) { 
+    function generateHighscores(par, par2, par3) {         
         for(let i = 0; i < 10; i++) {
-            par.length < 10 ? par.push('--- | | ---') : null;                  
+            par.length < 10 && par.push('--- | | ---');                  
             par[i] != '--- | | ---' ? 
             $(par3).append(`<p>${i+1}.<span class="${par2}${i}">${ par[i].name} - attempts: ${par[i].attempts}, time: ${par[i].playTime}</span></p>`):
             $(par3).append(`<p>${i+1}.<span class="${par2}${i}">${par[i]}</span></p>`);            
@@ -419,9 +421,9 @@ export function main() {
     // Uploading and displaying highscores    
     (function storageData() {
         storageNames.map((stname, i) => {
-            if (!localStorage.getItem(stname)) {
+            if (!localStorage.getItem(stname)) {               
                 generateHighscores(storageScores[i], stname, highscores[i])
-            } else {
+            } else {               
                 storageScores[i] = JSON.parse(localStorage.getItem(stname));
                 generateHighscores(storageScores[i], stname, highscores[i]);            
             }

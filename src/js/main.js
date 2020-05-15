@@ -1,5 +1,5 @@
 import "../styles/style.css";
-import {$musicBtn} from "./music";
+import {$musicBtn, music} from "./music";
 import {$window, hideTimerBtns, $myCanvasTime, $myCanvas} from "./canvas";
 import {$start, $loader, playerName} from "./signLogIn";
 const requireContext = require.context("../images", true, /^\.\/.*\.(png|jpe?g$)/);
